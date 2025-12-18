@@ -156,5 +156,38 @@ public class Brouillimg {
         
         return out;
     }
+
+    public static double pearsonCorrelation(int[] rowX, int[] rowY) {
+        int longueur = rowX.length;
+        double numerator = 0.0;
+        double moyenneX = 0.0;
+        double moyenneY = 0.0;
+
+        for (int i = 0; i < longueur; i++) {
+            moyenneX += rowX[i];
+            moyenneY += rowY[i];
+        }
+        moyenneX /= longueur;
+        moyenneY /= longueur;
+
+        for (int i=0 ; i<longueur; i++) {
+            numerator += (rowX[i] - moyenneX) * (rowY[i] - moyenneY);
+        }
+
+        double sumX = 0.0;
+        double sumY = 0.0;
+
+        for (int i = 0; i < longueur; i++) {
+            sumX += (rowX[i] - moyenneX) * (rowX[i] - moyenneX);
+            sumY += (rowY[i] - moyenneY) * (rowY[i] - moyenneY);
+        }
+        double denominator = Math.sqrt(sumX) * Math.sqrt(sumY);
+
+        return numerator / denominator;
+    }
+
+    public static double scorePearson() {
+        
+    }
 }
 
