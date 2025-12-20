@@ -11,7 +11,7 @@ public class Brouillimg {
 
     public static void main(String[] args) throws IOException {
         if (args.length < 2) {
-            System.err.println("Usage: java Brouillimg <image_claire> <clé> [image_sortie]");
+            System.err.println("Usage: java Brouillimg <image_claire> <clé> [image_sortie] <processus>");
             System.exit(1);
         }
         String inPath = args[0];
@@ -51,7 +51,7 @@ public class Brouillimg {
             default:
                 break;
         }
-        if (pgcd(height, 2*(0x7F & key))!=1) {
+        if (!validKey(key, height)) {
             System.out.println(" la clé n'est pas valide, cela peut rendre l'image impossible à débrouiller");
         }
     }
@@ -227,6 +227,10 @@ public class Brouillimg {
             return i1;
         }
         return pgcd(i2, i1%i2);
+    }
+
+    public static boolean validKey(int key, int height) {
+        return (pgcd(2*(key & 0x7F)+1,height)==1);
     }
 
 

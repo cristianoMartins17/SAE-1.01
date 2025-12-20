@@ -14,7 +14,7 @@ public class ComparerImages {
         if (image1 == null || image2==null) {
             throw new IOException("Format d’image non reconnu: ");
         }
-        comparerDeuxImages(image1, image2);
+        System.out.println("nombre de pixels différents entre les 2 images : "+comparerDeuxImages(image1, image2));
     }
 
         public static int comparerDeuxImages(BufferedImage image1, BufferedImage image2) {
