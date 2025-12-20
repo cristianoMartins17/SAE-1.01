@@ -51,6 +51,9 @@ public class Brouillimg {
             default:
                 break;
         }
+        if (pgcd(height, 2*(0x7F & key))!=1) {
+            System.out.println(" la clé n'est pas valide, cela peut rendre l'image impossible à débrouiller");
+        }
     }
     /**
      * Convertit une image RGB en niveaux de gris (GL).
