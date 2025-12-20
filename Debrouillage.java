@@ -69,6 +69,7 @@ public class Debrouillage {
      */
     public static int breakKeyPearson(BufferedImage image) {
         // Récupérer la hauteur de l'image (nombre de lignes)
+        int[][] tab2DGL=Brouillimg.rgb2gl(image);
         int hauteur = image.getHeight();
         
         // Initialiser le meilleur score à la valeur minimale possible
@@ -84,15 +85,11 @@ public class Debrouillage {
             int[] permCandidat = Brouillimg.generatePermutation(hauteur, i);
             
             // Débrouiller l'image avec cette image candidate
-            BufferedImage imageCandidate = Brouillimg.unscrambleLines(image, 
-                permCandidat);
-            
             // Convertir l'image RGB en niveaux de gris pour le calcul du score
-            int[][] rgb2glImage = Brouillimg.rgb2gl(imageCandidate);
+            int[][] rgb2glImage = unScrambleLignesTab2D(tab2DGL, permCandidat);
             
             // Calculer le score de Pearson pour cette image candidate
             double score = scorePearson(rgb2glImage);
-            
             // Si ce score est plus grand que le meilleur score actuel
             if (score > scoreMax) {
                 // Mettre à jour le meilleur score
@@ -119,7 +116,6 @@ public class Debrouillage {
         double numerator = 0.0;
         double moyenneX = 0.0;
         double moyenneY = 0.0;
-
         for (int i = 0; i < longueur; i++) {
             moyenneX += rowX[i];
             moyenneY += rowY[i];
@@ -213,7 +209,7 @@ public class Debrouillage {
         int meilleurCandidat=0;
         for (int i = 0; i < 32768; i++) {
             int[] permCandidat=Brouillimg.generatePermutation(hauteur, i);
-            int[][] rgb2glImage=UnScrambleLignesTab2D(tab2DGL, permCandidat);
+            int[][] rgb2glImage=unScrambleLignesTab2D(tab2DGL, permCandidat);
             long score=scoreEuclideanOpti(rgb2glImage);
             if (score<distanceMin) {
                 distanceMin=score;
@@ -246,7 +242,7 @@ public class Debrouillage {
         for (int s = 0; s < 128; s++) {
             if (! Brouillimg.validKey(s, hauteur)) {continue;}
             int[] permCandidatS=Brouillimg.generatePermutation(hauteur, s);
-            int[][] rgb2glImage=UnScrambleLignesTab2D(tab2DGL, permCandidatS);
+            int[][] rgb2glImage=unScrambleLignesTab2D(tab2DGL, permCandidatS);
             double score = scoreEuclideanOpti(rgb2glImage);
             if (score<distanceMin) {
                 distanceMin=score;
@@ -259,7 +255,7 @@ public class Debrouillage {
             if (! Brouillimg.validKey(cleCandidat, hauteur)) {System.out.println("o");}
             int[] permCandidat=Brouillimg.generatePermutation(hauteur, 
                 cleCandidat);
-            int[][] rgb2glImage=UnScrambleLignesTab2D(tab2DGL, permCandidat);
+            int[][] rgb2glImage=unScrambleLignesTab2D(tab2DGL, permCandidat);
             double score = scoreEuclideanOpti(rgb2glImage);
             if (score<distanceMin) {
                 distanceMin=score;
@@ -305,7 +301,7 @@ public class Debrouillage {
         }
     }
 
-    public static int[][] UnScrambleLignesTab2D(int[][] tab, int[] permutation) {
+    public static int[][] unScrambleLignesTab2D(int[][] tab, int[] permutation) {
         int[][] resultat = new int[tab.length][tab[0].length];
         for (int i = 0; i < permutation.length; i++) {
             int srcY=permutation[i];
