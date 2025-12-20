@@ -190,7 +190,7 @@ public class Debrouillage {
             }
         }
         int meilleurCleCandidate=meilleurS<<7;
-        for (int r = 0; r <= 256; r++) {
+        for (int r = 0; r < 256; r++) {
             int cleCandidat=(r << 7) | meilleurS;
             int[] permCandidat=Brouillimg.generatePermutation(hauteur, 
                 cleCandidat);
@@ -212,6 +212,7 @@ public class Debrouillage {
      * @param methode La méthode à utiliser : "Euclid", "Pearson" ou "optimisation"
      * @return La clé trouvée, ou -1 si la méthode est invalide
      */
+
     public static int breakKey(BufferedImage image, String methode) {
         switch (methode) {
             case "Euclid":
@@ -227,23 +228,22 @@ public class Debrouillage {
 
 
     public static void main(String[] args) throws IOException{
-        if (args.length<3) {
-            System.out.println("Debrouillage <chemin_image_brouillée> <méthode utilisée> <booleen créer_image> [chemin_sortie]");
+        if (args.length<2) {
+            System.out.println("Debrouillage <chemin_image_brouillée> <méthode utilisée> [creer_image_debrouillée]");
             return;
         }
         BufferedImage inputimg = ImageIO.read(new File(args[0]));
         String methode = args[1];
-        boolean creerImage=(args[2].equals("true"));
         int cle=breakKey(inputimg, methode);
-        if (creerImage) {
-            String outChemin=(args.length==4) ? args[3] : "out.png";
+        if (args.length==3) {
+            String outChemin=args[2];
             int[] perm=Brouillimg.generatePermutation(inputimg.getHeight(),cle);
             BufferedImage outImage=Brouillimg.unscrambleLines(inputimg, perm);
             System.out.print("image écrite : ");
             ImageIO.write(outImage, "png",new File(outChemin));
         }
         else {
-            System.out.println(cle);
+            System.out.println("La clé pour débrouiller l'image vaut : "+cle);
         }
     }
 
