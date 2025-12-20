@@ -5,6 +5,14 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Debrouillage {
+  
+    /**
+    * Calcule la distance euclidienne entre deux lignes d'une image en niveaux de gris.
+    * @param imageGris La matrice de l'image en niveaux de gris
+    * @param l1 L'index de la première ligne
+    * @param l2 L'index de la deuxième ligne
+    * @return La distance euclidienne entre les deux lignes
+    */
     public static double euclideanDistance(int[][] imageGris , int l1, int l2) {
         double somme=0.0;
         for (int i = 0; i < imageGris[0].length; i++) {
@@ -15,6 +23,13 @@ public class Debrouillage {
         return Math.sqrt(somme);
     }
 
+    /**
+     * Calcule le score euclidien total d'une image en sommant les distances
+     * entre chaque paire de lignes consécutives.
+     * Plus le score est faible, plus l'image est probablement correcte.
+     * @param imageGris La matrice de l'image en niveaux de gris
+     * @return Le score euclidien total (plus petit = meilleur)
+     */
     public static double scoreEuclidean(int[][] imageGris) {
         double score=0.0;
         for (int i = 1; i < imageGris.length; ++i) {
@@ -23,13 +38,20 @@ public class Debrouillage {
         return (score);
     }
 
+    /**
+     * Casse la clé de chiffrement en testant toutes les clés possibles (1 à 32767)
+     * en utilisant le score euclidien comme critère de qualité.
+     * @param image L'image chiffrée à débrouiller
+     * @return La clé qui donne le meilleur score euclidien (distance minimale)
+     */
     public static int breakKeyEuclid(BufferedImage image) {
         int hauteur=image.getHeight();
         double distanceMin =Double.MAX_VALUE;
         int meilleurCandidat=0;
         for (int i = 1; i < 32768; i++) {
             int[] permCandidat=Brouillimg.generatePermutation(hauteur, i);
-            BufferedImage imageCandidate=Brouillimg.unscrambleLines(image, permCandidat);
+            BufferedImage imageCandidate=Brouillimg.unscrambleLines(image, 
+                permCandidat);
             int[][] rgb2glImage=Brouillimg.rgb2gl(imageCandidate);
             double score=scoreEuclidean(rgb2glImage);
             if (score<distanceMin) {
@@ -40,13 +62,22 @@ public class Debrouillage {
         return meilleurCandidat;
     }
 
+    /**
+     * Casse la clé de chiffrement en utilisant une méthode optimisée en deux étapes :
+     * 1) Teste les 128 premiers bits (bits de poids faible)
+     * 2) Affine avec les 256 combinaisons des bits de poids fort
+     * Cette méthode est plus rapide que de tester toutes les 32768 clés.
+     * @param image L'image chiffrée à débrouiller
+     * @return La clé optimale trouvée
+     */
     public static int breakKeyOpti(BufferedImage image) {
         double distanceMin=Double.MAX_VALUE;
         int hauteur=image.getHeight();
         int meilleurS=0;
         for (int s = 0; s < 128; s++) {
             int[] permCandidatS=Brouillimg.generatePermutation(hauteur, s);
-            BufferedImage imageCandidate=Brouillimg.unscrambleLines(image, permCandidatS);
+            BufferedImage imageCandidate=Brouillimg.unscrambleLines(image, 
+                permCandidatS);
             int[][] rgb2glImage=Brouillimg.rgb2gl(imageCandidate);
             double score = scoreEuclidean(rgb2glImage);
             if (score<distanceMin) {
@@ -57,8 +88,10 @@ public class Debrouillage {
         int meilleurCleCandidate=meilleurS<<7;
         for (int r = 0; r <= 256; r++) {
             int cleCandidat=(r << 7) | meilleurS;
-            int[] permCandidat=Brouillimg.generatePermutation(hauteur, cleCandidat);
-            BufferedImage imageCandidate=Brouillimg.unscrambleLines(image, permCandidat);
+            int[] permCandidat=Brouillimg.generatePermutation(hauteur, 
+                cleCandidat);
+            BufferedImage imageCandidate=Brouillimg.unscrambleLines(image, 
+                permCandidat);
             int[][] rgb2glImage=Brouillimg.rgb2gl(imageCandidate);
             double score = scoreEuclidean(rgb2glImage);
             if (score<distanceMin) {
@@ -69,6 +102,12 @@ public class Debrouillage {
         return meilleurCleCandidate;
     }
 
+    /**
+     * Casse la clé de chiffrement en testant toutes les clés possibles (1 à 32767)
+     * en utilisant le score de Pearson comme critère de qualité.
+     * @param image L'image chiffrée à débrouiller
+     * @return La clé qui donne le meilleur score de Pearson (corrélation maximale)
+     */
     public static int breakKeyPearson(BufferedImage image) {
         // Récupérer la hauteur de l'image (nombre de lignes)
         int hauteur = image.getHeight();
@@ -86,7 +125,8 @@ public class Debrouillage {
             int[] permCandidat = Brouillimg.generatePermutation(hauteur, i);
             
             // Débrouiller l'image avec cette image candidate
-            BufferedImage imageCandidate = Brouillimg.unscrambleLines(image, permCandidat);
+            BufferedImage imageCandidate = Brouillimg.unscrambleLines(image, 
+                permCandidat);
             
             // Convertir l'image RGB en niveaux de gris pour le calcul du score
             int[][] rgb2glImage = Brouillimg.rgb2gl(imageCandidate);
@@ -94,8 +134,7 @@ public class Debrouillage {
             // Calculer le score de Pearson pour cette image candidate
             double score = scorePearson(rgb2glImage);
             
-            // Si ce score est MEILLEUR (plus grand) que le meilleur score actuel
-            // Note : pour Pearson, on utilise ">" car on cherche le maximum
+            // Si ce score est plus grand que le meilleur score actuel
             if (score > scoreMax) {
                 // Mettre à jour le meilleur score
                 scoreMax = score;
@@ -108,6 +147,12 @@ public class Debrouillage {
         return meilleurCandidat;
     }
 
+    /**
+     * Casse la clé de chiffrement selon la méthode spécifiée.
+     * @param image L'image chiffrée à débrouiller
+     * @param methode La méthode à utiliser : "Euclid", "Pearson" ou "optimisation"
+     * @return La clé trouvée, ou -1 si la méthode est invalide
+     */
     public static int breakKey(BufferedImage image, String methode) {
         switch (methode) {
             case "Euclid":
@@ -121,6 +166,13 @@ public class Debrouillage {
         }
     }
 
+    /**
+     * Calcule le coefficient de corrélation de Pearson entre deux lignes.
+     * Le résultat est compris entre -1 et 1 (1 = corrélation parfaite).
+     * @param rowX La première ligne
+     * @param rowY La deuxième ligne
+     * @return Le coefficient de corrélation ρ(x,y)
+     */
     public static double pearsonCorrelation(int[] rowX, int[] rowY) {
         int longueur = rowX.length;
         double numerator = 0.0;
@@ -150,6 +202,13 @@ public class Debrouillage {
         return numerator / denominator;
     }
 
+    /**
+     * Calcule le score de Pearson total d'une image en sommant les corrélations
+     * entre chaque paire de lignes consécutives.
+     * Plus le score est élevé, plus l'image est probablement correcte.
+     * @param image La matrice de l'image en niveaux de gris
+     * @return Le score de Pearson total (plus grand = meilleur)
+     */
     public static double scorePearson(int[][] image) {
         double scoreTotal = 0.0;
         
@@ -166,7 +225,8 @@ public class Debrouillage {
     }
 
     public static void main(String[] args) throws IOException{
-        if (args.length<3) {System.out.println("Debrouillage <chemin_image_brouillée> <méthode utilisée> <booleen créer_image> [chemin_sortie]");
+        if (args.length<3) {
+            System.out.println("Debrouillage <chemin_image_brouillée> <méthode utilisée> <booleen créer_image> [chemin_sortie]");
             return;
         }
         BufferedImage inputimg = ImageIO.read(new File(args[0]));
