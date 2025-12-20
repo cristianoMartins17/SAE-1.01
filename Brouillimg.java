@@ -157,7 +157,7 @@ public class Brouillimg {
         return out;
     }
 
-    public static double pearsonCorrelation(int[] rowX, int[] rowY) {
+        public static double pearsonCorrelation(int[] rowX, int[] rowY) {
         int longueur = rowX.length;
         double numerator = 0.0;
         double moyenneX = 0.0;
@@ -186,8 +186,19 @@ public class Brouillimg {
         return numerator / denominator;
     }
 
-    public static double scorePearson() {
+    public double scorePearson(int[][] image) {
+        double scoreTotal = 0.0;
         
+        // Parcourir toutes les paires de lignes consécutives
+        for (int i = 0; i < image.length - 1; i++) {
+            // Calculer la corrélation entre la ligne i et la ligne i+1
+            double correlation = pearsonCorrelation(image[i], image[i + 1]);
+            
+            // Ajouter cette corrélation au score total
+            scoreTotal += correlation;
+        }
+        
+        return scoreTotal;
     }
 }
 
