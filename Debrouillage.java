@@ -49,9 +49,9 @@ public class Debrouillage {
         double distanceMin =Double.MAX_VALUE;
         int[][] tab2DGL=Brouillimg.rgb2gl(image);
         int meilleurCandidat=0;
-        for (int i = 1; i < 32768; i++) {
+        for (int i = 0; i < 32768; i++) {
             int[] permCandidat=Brouillimg.generatePermutation(hauteur, i);
-            int[][] rgb2glImage=UnScrambleLignesTab2D(tab2DGL, permCandidat);
+            int[][] rgb2glImage=unScrambleLignesTab2D(tab2DGL, permCandidat);
             double score=scoreEuclidean(rgb2glImage);
             if (score<distanceMin) {
                 distanceMin=score;
@@ -80,10 +80,9 @@ public class Debrouillage {
         int meilleurCandidat = 0;
         
         // Tester toutes les clés possibles de 1 à 32767
-        for (int i = 1; i < 32768; i++) {
+        for (int i = 0; i < 32768; i++) {
             // Générer la permutation correspondant à cette clé
             int[] permCandidat = Brouillimg.generatePermutation(hauteur, i);
-            
             // Débrouiller l'image avec cette image candidate
             // Convertir l'image RGB en niveaux de gris pour le calcul du score
             int[][] rgb2glImage = unScrambleLignesTab2D(tab2DGL, permCandidat);
@@ -135,7 +134,7 @@ public class Debrouillage {
             sumY += (rowY[i] - moyenneY) * (rowY[i] - moyenneY);
         }
         double denominator = Math.sqrt(sumX) * Math.sqrt(sumY);
-
+        if (denominator==0.0) {return 0.0;}
         return numerator / denominator;
     }
 
@@ -233,36 +232,43 @@ public class Debrouillage {
      * @return La clé optimale trouvée
      */
 
-
-    public static int breakKeyIntelligent(BufferedImage image) {
-        double distanceMin=Double.MAX_VALUE;
-        int[][] tab2DGL=Brouillimg.rgb2gl(image);
-        int hauteur=image.getHeight();
+    public static int trouverMeilleurS(int[][] tab2DGL) {
+        int hauteur=tab2DGL.length;
         int meilleurS=0;
+        double scoreMin=Double.MAX_VALUE;
         for (int s = 0; s < 128; s++) {
-            if (! Brouillimg.validKey(s, hauteur)) {continue;}
             int[] permCandidatS=Brouillimg.generatePermutation(hauteur, s);
             int[][] rgb2glImage=unScrambleLignesTab2D(tab2DGL, permCandidatS);
-            double score = scoreEuclideanOpti(rgb2glImage);
-            if (score<distanceMin) {
-                distanceMin=score;
+            double score = scoreEuclidean(rgb2glImage);
+            if (score<scoreMin) {
+                scoreMin=score;
                 meilleurS=s;
             }
         }
+        return meilleurS;
+    }
+
+    public static int trouverMeilleurCle(int[][] tab2DGL, int meilleurS) {
         int meilleurCleCandidate=meilleurS<<7;
+        double scoreMax=-Double.MAX_VALUE;
+        int hauteur=tab2DGL.length;
         for (int r = 0; r < 256; r++) {
             int cleCandidat=(r << 7) | meilleurS;
-            if (! Brouillimg.validKey(cleCandidat, hauteur)) {System.out.println("o");}
-            int[] permCandidat=Brouillimg.generatePermutation(hauteur, 
-                cleCandidat);
+            int[] permCandidat=Brouillimg.generatePermutation(hauteur, cleCandidat);
             int[][] rgb2glImage=unScrambleLignesTab2D(tab2DGL, permCandidat);
-            double score = scoreEuclideanOpti(rgb2glImage);
-            if (score<distanceMin) {
-                distanceMin=score;
+            double score = scorePearson(rgb2glImage);
+            if (score>scoreMax) {
+                scoreMax=score;
                 meilleurCleCandidate=cleCandidat;
             }
         }
         return meilleurCleCandidate;
+
+    }
+    public static int breakKeyOpti(BufferedImage image) {
+        int[][] tab2DGL=Brouillimg.rgb2gl(image);
+        int meilleurS=trouverMeilleurS(tab2DGL);
+        return trouverMeilleurCle(tab2DGL, meilleurS);
     }
 
     public static int breakKey(BufferedImage image, String methode) {
@@ -273,8 +279,8 @@ public class Debrouillage {
                 return breakKeyPearson(image);
             case "EuclidOpti":
                 return breakKeyEuclidOpti(image);
-            case "Intelligent":
-                return breakKeyIntelligent(image);
+            case "Optimisation":
+                return breakKeyOpti(image);
             default:
                 return -1;
         }
