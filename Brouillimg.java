@@ -150,50 +150,6 @@ public class Brouillimg {
         return out;
     }
 
-    public static double pearsonCorrelation(int[] rowX, int[] rowY) {
-        int longueur = rowX.length;
-        double numerator = 0.0;
-        double moyenneX = 0.0;
-        double moyenneY = 0.0;
-
-        for (int i = 0; i < longueur; i++) {
-            moyenneX += rowX[i];
-            moyenneY += rowY[i];
-        }
-        moyenneX /= longueur;
-        moyenneY /= longueur;
-
-        for (int i=0 ; i<longueur; i++) {
-            numerator += (rowX[i] - moyenneX) * (rowY[i] - moyenneY);
-        }
-
-        double sumX = 0.0;
-        double sumY = 0.0;
-
-        for (int i = 0; i < longueur; i++) {
-            sumX += (rowX[i] - moyenneX) * (rowX[i] - moyenneX);
-            sumY += (rowY[i] - moyenneY) * (rowY[i] - moyenneY);
-        }
-        double denominator = Math.sqrt(sumX) * Math.sqrt(sumY);
-
-        return numerator / denominator;
-    }
-
-    public double scorePearson(int[][] image) {
-        double scoreTotal = 0.0;
-        
-        // Parcourir toutes les paires de lignes consécutives
-        for (int i = 0; i < image.length - 1; i++) {
-            // Calculer la corrélation entre la ligne i et la ligne i+1
-            double correlation = pearsonCorrelation(image[i], image[i + 1]);
-            
-            // Ajouter cette corrélation au score total
-            scoreTotal += correlation;
-        }
-        
-        return scoreTotal;
-    }
-    
     public static int pgcd(int i1, int i2) {
         if (i2>i1) {
             int temp=i2;

@@ -69,23 +69,100 @@ public class Debrouillage {
         return meilleurCleCandidate;
     }
 
+    public static int breakKeyPearson(BufferedImage image) {
+        // Récupérer la hauteur de l'image (nombre de lignes)
+        int hauteur = image.getHeight();
+        
+        // Initialiser le meilleur score à la valeur minimale possible
+        // Pour Pearson, on cherche le MAXIMUM (corrélation la plus élevée)
+        double scoreMax = Double.MIN_VALUE;
+        
+        // Variable pour stocker la meilleure clé trouvée
+        int meilleurCandidat = 0;
+        
+        // Tester toutes les clés possibles de 1 à 32767
+        for (int i = 1; i < 32768; i++) {
+            // Générer la permutation correspondant à cette clé
+            int[] permCandidat = Brouillimg.generatePermutation(hauteur, i);
+            
+            // Débrouiller l'image avec cette image candidate
+            BufferedImage imageCandidate = Brouillimg.unscrambleLines(image, permCandidat);
+            
+            // Convertir l'image RGB en niveaux de gris pour le calcul du score
+            int[][] rgb2glImage = Brouillimg.rgb2gl(imageCandidate);
+            
+            // Calculer le score de Pearson pour cette image candidate
+            double score = scorePearson(rgb2glImage);
+            
+            // Si ce score est MEILLEUR (plus grand) que le meilleur score actuel
+            // Note : pour Pearson, on utilise ">" car on cherche le maximum
+            if (score > scoreMax) {
+                // Mettre à jour le meilleur score
+                scoreMax = score;
+                // Sauvegarder cette clé comme meilleur candidat
+                meilleurCandidat = i;
+            }
+        }
+        
+        // Retourner la clé qui a donné le meilleur score
+        return meilleurCandidat;
+    }
+
     public static int breakKey(BufferedImage image, String methode) {
         switch (methode) {
             case "Euclid":
                 return breakKeyEuclid(image);
-            // case "Pearson":
-            //     break;
+            case "Pearson":
+                return breakKeyPearson(image);
             case "optimisation":
                 return breakKeyOpti(image);
             default:
                 return -1;
         }
+    }
 
+    public static double pearsonCorrelation(int[] rowX, int[] rowY) {
+        int longueur = rowX.length;
+        double numerator = 0.0;
+        double moyenneX = 0.0;
+        double moyenneY = 0.0;
 
+        for (int i = 0; i < longueur; i++) {
+            moyenneX += rowX[i];
+            moyenneY += rowY[i];
+        }
+        moyenneX /= longueur;
+        moyenneY /= longueur;
 
+        for (int i=0 ; i<longueur; i++) {
+            numerator += (rowX[i] - moyenneX) * (rowY[i] - moyenneY);
+        }
 
+        double sumX = 0.0;
+        double sumY = 0.0;
 
+        for (int i = 0; i < longueur; i++) {
+            sumX += (rowX[i] - moyenneX) * (rowX[i] - moyenneX);
+            sumY += (rowY[i] - moyenneY) * (rowY[i] - moyenneY);
+        }
+        double denominator = Math.sqrt(sumX) * Math.sqrt(sumY);
 
+        return numerator / denominator;
+    }
+
+    public static double scorePearson(int[][] image) {
+        double scoreTotal = 0.0;
+        
+        // Parcourir toutes les paires de lignes consécutives
+        for (int i = 0; i < image.length - 1; i++) {
+            // Calculer la corrélation entre la ligne i et la ligne i+1
+            double correlation = pearsonCorrelation(image[i], image[i + 1]);
+            
+            // Ajouter cette corrélation au score total
+            scoreTotal += correlation;
+        }
+        
+        return scoreTotal;
     }
 
     public static void main(String[] args) throws IOException{
