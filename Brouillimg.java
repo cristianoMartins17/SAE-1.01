@@ -15,13 +15,11 @@ public class Brouillimg {
             System.exit(1);
         }
         String inPath = args[0];
-        String outPath = (args.length >= 3) ? args[2] : "out.png";
+        String outPath = (args.length > 3) ? args[2] : "out.png";
         // Masque 0x7FFF pour garantir que la clé ne dépasse pas les 15 bits
         int key = Integer.parseInt(args[1]) & 0x7FFF ;
         int indiceProcess= (args.length==4)? 3 : 2;
         String process=args[indiceProcess];
-
-
 
         BufferedImage inputImage = ImageIO.read(new File(inPath));
         if (inputImage == null) {
@@ -31,18 +29,17 @@ public class Brouillimg {
         final int height = inputImage.getHeight();
         final int width = inputImage.getWidth();
         System.out.println("Dimensions de l'image : " + width + "x" + height);
-
         // Pré‑calcul des lignes en niveaux de gris pour accélérer le calcul du critère
-        int[][] inputImageGL = rgb2gl(inputImage);
+        // int[][] inputImageGL = rgb2gl(inputImage);
 
         int[] perm = generatePermutation(height, key);
         switch (process) {
-            case "scrumble":
+            case "scramble":
                 BufferedImage scrambledImage = scrambleLines(inputImage, perm);
                 ImageIO.write(scrambledImage, "png", new File(outPath));
                 System.out.println("Image écrite: " + outPath);
                 break;
-            case "unscrumble":
+            case "unscramble":
                 BufferedImage unscrambledImage = unscrambleLines(inputImage, perm);
                 ImageIO.write(unscrambledImage, "png", new File(outPath));
                 System.out.println("Image écrite: " + outPath);
@@ -51,8 +48,6 @@ public class Brouillimg {
                 break;
         }
     }
-
-
     /**
      * Convertit une image RGB en niveaux de gris (GL).
      * @param inputRGB image d'entrée en RGB
@@ -76,7 +71,6 @@ public class Brouillimg {
         }
         return outGL;
     }
-
     /**
      * Génère une permutation des entiers 0..size-1 en fonction d'une clé.
      * @param size taille de la permutation
@@ -122,8 +116,8 @@ public class Brouillimg {
      * @return indice de la ligne dans l'image brouillée (0..size-1)
      */
     public static int scrambledId(int id, int size, int key) {
-        int r=(key>>7 & 0xFF); // pour obtenir les 8 premiers bits je fais juste ce ET logique entre key et 111111110000000
-        int s=(key & 0x7F); // pareil pour les 7 deniers
+        int r=(key>>7 & 0xFF); // pour obtenir les 8 premiers bits on décale chaque bit vers la droite de 7
+        int s=(key & 0x7F); // pour les 7 derniers on fait juste un et logique avec 000000001111111 ca gardera que les 7 à droite
         return ((r+(2*s+1)*id)%size);
     }
 
@@ -152,9 +146,22 @@ public class Brouillimg {
                 int rgb = inputImg.getRGB(x, srcY); //on récupère la couleur du pixel dans l'image d'entrée
                 out.setRGB(x, y, rgb); //on place la couleur dans l'image de sortie
             }
-        }
-        
+        } 
         return out;
     }
+
+    public static int pgcd(int i1, int i2) {
+        if (i2>i1) {
+            int temp=i2;
+            i2=i1;
+            i1=temp;
+        }
+        if (i1==0 || i2==0) {
+            return i1;
+        }
+        return pgcd(i2, i1%i2);
+    }
+
+
 }
 
