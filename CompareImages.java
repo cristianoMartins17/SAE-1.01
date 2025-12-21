@@ -1,3 +1,8 @@
+/*MARTINS Cristiano (référent)
+  TACHERIFT Sofiane
+  groupe 20
+*/
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

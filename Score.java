@@ -1,3 +1,8 @@
+/*MARTINS Cristiano (référent)
+  TACHERIFT Sofiane
+  groupe 20
+*/
+
 public class Score {
 
     // ==================Euclid================================================================
@@ -88,7 +93,8 @@ public class Score {
         // Parcourir toutes les paires de lignes consécutives
         for (int i = 0; i < tab2DGL.length - 1; i++) {
             // Calculer la corrélation entre la ligne i et la ligne i+1
-            double correlation = pearsonCorrelation(tab2DGL[permutation[i]], tab2DGL[permutation[i + 1]]);
+            double correlation=
+            pearsonCorrelation(tab2DGL[permutation[i]],tab2DGL[permutation[i + 1]]);
             // Ajouter cette corrélation au score total
             scoreTotal += correlation;
         }
@@ -132,7 +138,8 @@ public class Score {
     public static long scoreEuclideanOpti(int[][] tab2DGL, int[] permutation) {
         long score = 0;
         for (int i = 1; i < tab2DGL.length; i = i + 1) {
-            score += euclideanDistanceOpti(tab2DGL[permutation[i]], tab2DGL[permutation[i - 1]]);
+            score += euclideanDistanceOpti(tab2DGL[permutation[i]],
+                tab2DGL[permutation[i - 1]]);
         }
         return score;
     }
