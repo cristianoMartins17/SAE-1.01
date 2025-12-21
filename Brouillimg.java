@@ -174,8 +174,7 @@ public class Brouillimg {
      *  - La ligne 1 de sortie vient de la ligne 0 de l'entrée
      *  - La ligne 2 de sortie vient de la ligne 1 de l'entrée
      */
-    public static BufferedImage unscrambleLines(BufferedImage inputImg,
-         int[] perm){
+    public static BufferedImage unscrambleLines(BufferedImage inputImg, int[] perm){
         int width = inputImg.getWidth();
         int height = inputImg.getHeight();
         if (perm.length != height) throw new 
@@ -184,15 +183,10 @@ public class Brouillimg {
         BufferedImage out = new BufferedImage(width, height, 
             BufferedImage.TYPE_INT_ARGB);
 
-        //on parcours chaque ligne de l'image de sortie
         for (int y = 0; y < height; y++) { 
-            // position de la ligne y dans l'image brouillée
             int srcY = perm[y];  
-            //on parcours chaque pixel de la ligne
             for (int x = 0; x < width; x++) { 
-                //on récupère la couleur du pixel dans l'image d'entrée
                 int rgb = inputImg.getRGB(x, srcY); 
-                //on place la couleur dans l'image de sortie
                 out.setRGB(x, y, rgb);
             }
         } 

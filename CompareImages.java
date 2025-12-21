@@ -51,7 +51,7 @@ public class CompareImages {
         }
 
         public static BufferedImage imageDifferences(BufferedImage image1, BufferedImage image2) {
-            BufferedImage resultat= new BufferedImage(image1.getWidth(), image2.getWidth(), BufferedImage.TYPE_INT_ARGB);
+            BufferedImage resultat= new BufferedImage(image1.getWidth(), image2.getHeight(), BufferedImage.TYPE_INT_ARGB);
             for (int y = 0; y < image1.getHeight(); y++) {
                 for (int x = 0; x < image2.getWidth(); x++) {
                     int rgb1=image1.getRGB(x, y);

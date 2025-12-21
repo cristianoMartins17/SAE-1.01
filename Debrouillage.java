@@ -189,7 +189,7 @@ public class Debrouillage {
     */
     public static long euclideanDistanceOpti(int[] l1, int[] l2) {
         long somme=0;
-        for (int i = 0; i < l1.length; i+=2) {
+        for (int i = 0; i < l1.length; i+=1) {
             int rgb1=l1[i];
             int rgb2=l2[i];
             somme+=(rgb1-rgb2)*(rgb1-rgb2);
@@ -448,6 +448,12 @@ public class Debrouillage {
                 return breakKeyPearsonOpti(image);
             case "Optimisation":
                 return breakKeyOpti(image);
+            case "Auto":
+                if (image.getHeight()<512) {
+                    return breakKeyPearsonOpti(image);
+                } else {
+                    return breakKeyEuclidOpti(image);
+                }
             default:
                 return -1;
         }
