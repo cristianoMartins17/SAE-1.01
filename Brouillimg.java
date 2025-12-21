@@ -57,7 +57,7 @@ public class Brouillimg {
                 System.exit(2);
                 break;
         }
-        //Si la clé n'est pas valide pour la hauteur, on le signale
+        // Si la clé n'est pas valide pour la hauteur, on le signale
         if (!validKey(key, height)) {
             System.out.println("cle non valide , la permutation n'est pas reversible");
             int keyPlusProche = trouverCleValide(key, height);
@@ -246,9 +246,10 @@ public class Brouillimg {
     }
 
     /**
-     * regarde si une clé est valide par rapport à une 
+     * regarde si une clé est valide par rapport à une
      * hauteur d'image
-     * @param key la clé
+     * 
+     * @param key    la clé
      * @param height la hauteur d'image
      * @return un booléen vrai si la clé est valide, faux sinon
      */
@@ -257,9 +258,10 @@ public class Brouillimg {
     }
 
     /**
-     * Trouve la clé valide la plus proche 
+     * Trouve la clé valide la plus proche
      * pour une clé donnée par rapport à une hauteur d'image
-     * @param key la clé en question
+     * 
+     * @param key    la clé en question
      * @param height la hauteur dimage
      * @return la clé la plus proche
      */
@@ -267,8 +269,8 @@ public class Brouillimg {
     public static int trouverCleValide(int key, int height) {
         int keyPlus = key + 1;
         int keyMoins = key - 1;
-        while (!validKey(keyMoins, height) && keyPlus<32768 
-        && !validKey(keyPlus, height) && keyMoins>=0) {
+        while (!validKey(keyMoins, height) && keyPlus < 32768
+                && !validKey(keyPlus, height) && keyMoins >= 0) {
             keyPlus++;
             keyMoins--;
         }
