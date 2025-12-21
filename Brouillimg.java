@@ -53,7 +53,17 @@ public class Brouillimg {
                 System.exit(2);
                 break;
         }
-        if (! validKey(key, height)) {System.out.println("cle non valide , la permutation n'est pas reversible");}
+        if (! validKey(key, height)) {
+            System.out.println("cle non valide , la permutation n'est pas reversible");
+            int keyPlusProche=trouverCleValide(key, height);
+            if (key==-1) {
+                System.out.println("il n'existe pas de clé valide pour cette hauteur");
+            }
+            else {
+                System.out.println(keyPlusProche+ " est la clé valide la plus proche de votre clé");
+            }
+        
+        }
     }
     /**
      * Convertit une image RGB en niveaux de gris (GL).
@@ -222,6 +232,21 @@ public class Brouillimg {
         return (pgcd(2*(key & 0x7F)+1,height)==1);
     }
 
+    public static int trouverCleValide(int key, int height) {
+        int keyPlus=key+1;
+        int keyMoins=key-1;
+        while (!validKey(keyMoins, height) && !validKey(keyPlus, height)) {
+            keyPlus++;
+            keyMoins--;
+        }
+        if (validKey(keyPlus, height) && keyPlus<32768) {
+            return keyPlus;
+        }
+        else if (validKey(keyMoins, height) && keyMoins>=0) {
+            return keyMoins;
+        }
+        return -1;
+    }
 
 }
 
