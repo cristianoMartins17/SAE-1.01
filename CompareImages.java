@@ -20,7 +20,7 @@ public class CompareImages {
         }
         if (image1.getHeight()!=image2.getHeight() || image2.getWidth() != image1.getWidth()) {
             System.out.println("les images ne sont pas de même taille");
-            System.exit(2);; // Si les deux images sont pas de même taille, ca sert à rien de comparer, on retourne -1 parce que on saura que c'est une erreur
+            System.exit(2); // Si les deux images sont pas de même taille, ca sert à rien de comparer
         }
 
         if (args.length==3) {

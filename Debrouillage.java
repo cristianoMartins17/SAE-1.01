@@ -10,7 +10,7 @@ public class Debrouillage {
     public static void main(String[] args) throws IOException{
         if (args.length<2) {
             System.out.println("Debrouillage <image_brouillée> <méthode utilisée> [creer_image_debrouillée]");
-            System.exit(1);;
+            System.exit(1);
         }
         BufferedImage inputimg = ImageIO.read(new File(args[0]));
         String methode = args[1];
@@ -117,12 +117,12 @@ public class Debrouillage {
     public static int breakKeyPearsonOpti(BufferedImage image) {
         int[][] tab2DGL=Brouillimg.rgb2gl(image);
         double[] moyennes=new double[tab2DGL.length];
-        double[] variances=new double[tab2DGL.length];
+        double[] ecarts=new double[tab2DGL.length];
         for (int i = 0; i < moyennes.length; i++) {
             moyennes[i]=Score.calculerMoyenne(tab2DGL[i]);
         }
         for (int i = 0; i < moyennes.length; i++) {
-            variances[i]=Score.calculerVariance(tab2DGL[i], moyennes[i]);
+            ecarts[i]=Score.calculerEcarts(tab2DGL[i], moyennes[i]);
         }
         int hauteur = image.getHeight();
         // Initialiser le meilleur score à la valeur minimale possible
@@ -132,7 +132,7 @@ public class Debrouillage {
         int meilleurCandidat = 0;
         for (int i = 0; i < 32768; i++) {
             int[] permCandidat = Brouillimg.generatePermutation(hauteur, i);
-            double score = Score.scorePearsonOpti(tab2DGL, permCandidat, moyennes, variances);
+            double score = Score.scorePearsonOpti(tab2DGL, permCandidat, moyennes, ecarts);
             // Si ce score est plus grand que le meilleur score actuel, on le met à jour
             if (score > scoreMax) {
                 scoreMax = score;

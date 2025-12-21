@@ -162,17 +162,17 @@ public class Score {
      * @param rowY La deuxième ligne
      * @param moyX la moyenne de la ligne x
      * @param moyY la moyenne de la ligne y
-     * @param varX la variance de la ligne x
-     * @param varY la variance de la ligne y
+     * @param varX les ecarts de la ligne x
+     * @param varY les ecarts de la ligne y
      * @return Le coefficient de corrélation ρ(x,y)
      */
-    public static double pearsonCorrelationOpti(int[] rowX, int[] rowY, double moyX,double moyY, double varX, double varY) {
+    public static double pearsonCorrelationOpti(int[] rowX, int[] rowY, double moyX,double moyY, double ecartsX, double ecartsY) {
         double numerator=0.0;
         for (int i = 0; i < rowX.length; i++) {
             numerator+=((rowX[i] - moyX)*(rowY[i]-moyY));  
         }
 
-        double denominator=(Math.sqrt(varX)*Math.sqrt(varY));
+        double denominator=(Math.sqrt(ecartsX)*Math.sqrt(ecartsY));
         if (denominator==0.0) {return 0.0;}
         return numerator/denominator;
     }
@@ -185,17 +185,17 @@ public class Score {
      * @param tag2DGL La matrice de l'image en niveaux de gris
      * @param permutation la permutation que l'on teste
      * @param moyennes le tableau qui contient la moyenne de chaque ligne i
-     * @param variances le tableau qui contient la variances de chaque ligne i
+     * @param ecarts le tableau qui contient les ecarts de chaque ligne i
      * @return Le score de Pearson total (plus grand = meilleur)
      */
-    public static double scorePearsonOpti(int[][] tab2DGL, int[] permutation, double[] moyennes, double[] variances) {
+    public static double scorePearsonOpti(int[][] tab2DGL, int[] permutation, double[] moyennes, double[] ecarts) {
         double scoreTotal = 0.0;
-        for (int i = 0; i < tab2DGL.length - 1; i++) { /* On précalcule les moyennes et variances */
+        for (int i = 0; i < tab2DGL.length - 1; i++) { /* On précalcule les moyennes et les écarts */
             double moyX=moyennes[permutation[i]];
             double moyY=moyennes[permutation[i+1]];
-            double varX=variances[permutation[i]];
-            double varY=variances[permutation[i+1]];
-            double correlation = pearsonCorrelationOpti(tab2DGL[permutation[i]],tab2DGL[permutation[i+1]], moyX, moyY, varX, varY );
+            double ecartsX=ecarts[permutation[i]];
+            double ecartsY=ecarts[permutation[i+1]];
+            double correlation = pearsonCorrelationOpti(tab2DGL[permutation[i]],tab2DGL[permutation[i+1]], moyX, moyY, ecartsX, ecartsY );
             // Ajouter cette corrélation au score total
             scoreTotal += correlation;
         }
@@ -223,10 +223,10 @@ public class Score {
     public static int trouverMeilleurS(int[][] tab2DGL) {
         int hauteur=tab2DGL.length;
         int meilleurS=0;
-        double scoreMin=Double.MAX_VALUE;
+        long scoreMin=Long.MAX_VALUE;
         for (int s = 0; s < 128; s++) {
             int[] permCandidatS=Brouillimg.generatePermutation(hauteur, s);
-            double score = scoreEuclideanOpti(tab2DGL, permCandidatS);
+            long score = scoreEuclideanOpti(tab2DGL, permCandidatS);
             if (score<scoreMin) {
                 scoreMin=score;
                 meilleurS=s;
@@ -251,14 +251,14 @@ public class Score {
         for (int i = 0; i < tab2DGL.length; i++) {
             moyennes[i]=calculerMoyenne(tab2DGL[i]);
         }
-        double[] variances= new double[tab2DGL.length];
+        double[] ecarts= new double[tab2DGL.length];
         for (int i = 0; i < moyennes.length; i++) {
-            variances[i]=calculerVariance(tab2DGL[i], moyennes[i]);
+            ecarts[i]=calculerEcarts(tab2DGL[i], moyennes[i]);
         }
         for (int r = 0; r < 256; r++) {
             int cleCandidat=(r << 7) | meilleurS;
             int[] permCandidat=Brouillimg.generatePermutation(hauteur, cleCandidat);
-            double score = scorePearsonOpti(tab2DGL, permCandidat,moyennes,variances);
+            double score = scorePearsonOpti(tab2DGL, permCandidat,moyennes,ecarts);
             if (score>scoreMax) {
                 scoreMax=score;
                 meilleurCleCandidate=cleCandidat;
@@ -284,19 +284,19 @@ public class Score {
     }
 
     /**
-     * calcule la variance d'une ligne
-     * @param ligne la ligne dont on veut la variance
+     * calcule la somme des carrés des ecarts d'une ligne
+     * @param ligne la ligne dont on veut les ecarts
      * @param moyenne la moyenne de la ligne
-     * @return la variance
+     * @return les ecarts
      */
 
-    public static double calculerVariance(int[] ligne, double moyenne) {
-        double variance=0.0;
+    public static double calculerEcarts(int[] ligne, double moyenne) {
+        double ecarts=0.0;
         for (int i = 0; i < ligne.length; i++) {
             double difference=(ligne[i]-moyenne);
-            variance+=difference*difference;
+            ecarts+=difference*difference;
         }
-        return variance;
+        return ecarts;
     }
 
 

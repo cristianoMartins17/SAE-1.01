@@ -2,10 +2,10 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.security.PublicKey;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.IntStream;
+// import java.security.PublicKey;
+// import java.util.concurrent.atomic.AtomicInteger;
+// import java.util.concurrent.atomic.AtomicLong;
+// import java.util.stream.IntStream;
 
 public class Brouillimg {
 
@@ -151,7 +151,7 @@ public class Brouillimg {
     public static void afficherTab(int[] tab ) {
         System.out.print("[ ");
         for (int i = 0; i < tab.length; i++) {
-            System.out.println( tab[i]+" ");
+            System.out.print( tab[i]+" ");
             if (i<tab.length-1) {
                 System.out.print(", ");
             }
