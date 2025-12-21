@@ -53,6 +53,7 @@ public class Brouillimg {
                 System.exit(2);
                 break;
         }
+        if (! validKey(key, height)) {System.out.println("cle non valide");}
     }
     /**
      * Convertit une image RGB en niveaux de gris (GL).
@@ -211,12 +212,7 @@ public class Brouillimg {
      * pgcd(0, 5) retourne 5
      */
     public static int pgcd(int i1, int i2) {
-        if (i2>i1) {
-            int temp=i2;
-            i2=i1;
-            i1=temp;
-        }
-        if (i1==0 || i2==0) {
+        if (i2==0) {
             return i1;
         }
         return pgcd(i2, i1%i2);

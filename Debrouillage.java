@@ -148,7 +148,7 @@ public class Debrouillage {
      * @return la clé qui a été utilisée pour brouiler l'image
      */
     //il explose les autres break key
-    public static int breakKeyHybdrid(BufferedImage image) {
+    public static int breakKeyHybrid(BufferedImage image) {
         int[][] tab2DGL=Brouillimg.rgb2gl(image); //on trouve le meilleur s puis on l'utilise pour trouver la clé
         int meilleurS=Score.trouverMeilleurS(tab2DGL);
         return Score.trouverMeilleurCle(tab2DGL, meilleurS);
@@ -171,7 +171,7 @@ public class Debrouillage {
             case "PearsonOpti":
                 return breakKeyPearsonOpti(image);
             case "Hybrid":
-                return breakKeyHybdrid(image);
+                return breakKeyHybrid(image);
             case "Auto":
                 /*on fait ca car des fois, pour une image petite, la méthode hybride
                 renvoie la clé pour débrouiller l'image mais en invérsée. On utilise donc pearsonOpti
@@ -179,7 +179,7 @@ public class Debrouillage {
                 if (image.getHeight()<512) {
                     return breakKeyPearsonOpti(image);
                 } else {
-                    return breakKeyHybdrid(image);
+                    return breakKeyHybrid(image);
                 }
             default:
                 return -1;
