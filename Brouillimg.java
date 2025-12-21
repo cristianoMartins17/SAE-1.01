@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Brouillimg {
 
     public static void main(String[] args) throws IOException {
-        if (args.length < 2) {
+        if (args.length < 3) {
             System.err.println("Usage: java Brouillimg <image_entrée> <clé> [image_sortie] <processus>");
             System.exit(1);
         }
@@ -53,7 +53,7 @@ public class Brouillimg {
                 System.exit(2);
                 break;
         }
-        if (! validKey(key, height)) {System.out.println("cle non valide");}
+        if (! validKey(key, height)) {System.out.println("cle non valide , la permutation n'est pas reversible");}
     }
     /**
      * Convertit une image RGB en niveaux de gris (GL).
