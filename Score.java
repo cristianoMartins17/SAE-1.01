@@ -37,7 +37,8 @@ public class Score {
     public static double scoreEuclidean(int[][] tab2DGL, int[] permutation) {
         double score = 0.0;
         for (int i = 1; i < tab2DGL.length; i = i + 1) {
-            score += euclideanDistance(tab2DGL[permutation[i]], tab2DGL[permutation[i - 1]]);
+            score += euclideanDistance(tab2DGL[permutation[i]],
+                tab2DGL[permutation[i - 1]]);
         }
         return (score);
     }
@@ -72,7 +73,6 @@ public class Score {
             sumX += (rowX[i] - moyenneX) * (rowX[i] - moyenneX);
             sumY += (rowY[i] - moyenneY) * (rowY[i] - moyenneY);
         }
-
         double denominator = Math.sqrt(sumX) * Math.sqrt(sumY);
         if (denominator == 0.0) {
             return 0.0;
@@ -193,7 +193,8 @@ public class Score {
             double moyY = moyennes[permutation[i + 1]];
             double ecartsX = ecarts[permutation[i]];
             double ecartsY = ecarts[permutation[i + 1]];
-            double correlation = pearsonCorrelationOpti(tab2DGL[permutation[i]], tab2DGL[permutation[i + 1]], moyX,
+            double correlation = pearsonCorrelationOpti(tab2DGL[permutation[i]],
+                 tab2DGL[permutation[i + 1]], moyX,
                     moyY, ecartsX, ecartsY);
             // Ajouter cette corrélation au score total
             scoreTotal += correlation;
