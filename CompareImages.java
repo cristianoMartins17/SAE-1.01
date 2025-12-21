@@ -18,6 +18,10 @@ public class CompareImages {
         if (image1 == null || image2==null) {
             throw new IOException("Format d’image non reconnu: ");
         }
+        if (image1.getHeight()!=image2.getHeight() || image2.getWidth() != image1.getWidth()) {
+            System.out.println("les images ne sont pas de même taille");
+            System.exit(2);; // Si les deux images sont pas de même taille, ca sert à rien de comparer, on retourne -1 parce que on saura que c'est une erreur
+        }
 
         if (args.length==3) {
             String outChemin = args[2];
@@ -32,10 +36,6 @@ public class CompareImages {
     }
 
         public static int comparerDeuxImages(BufferedImage image1, BufferedImage image2) {
-            if (image1.getHeight()!=image2.getHeight() || image2.getWidth() != image1.getWidth()) {
-                System.out.println("les images ne sont pas de même taille");
-                return -1; // Si les deux images sont pas de même taille, ca sert à rien de comparer, on retourne -1 parce que on saura que c'est une erreur
-            }
             int compteur=0;
             for (int y = 0; y < image1.getHeight(); y++) {
                 for (int x= 0; x < image2.getWidth(); x++) {
