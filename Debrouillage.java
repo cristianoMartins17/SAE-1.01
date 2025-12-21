@@ -28,9 +28,7 @@ public class Debrouillage {
             System.out.println("image écrite : "+outChemin);
             ImageIO.write(outImage, "png",new File(outChemin));
         }
-        else {
-            System.out.println("La clé pour débrouiller l'image vaut : "+cle);
-        }
+        System.out.println("La clé pour débrouiller l'image vaut : "+cle);
         System.out.println("temps de débrouillage : "+((double)(tempsFin-tempsDepart))/1000 +" s");
     }
 
