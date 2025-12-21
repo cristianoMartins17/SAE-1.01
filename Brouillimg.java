@@ -245,9 +245,24 @@ public class Brouillimg {
         return pgcd(i2, i1 % i2);
     }
 
+    /**
+     * regarde si une clé est valide par rapport à une 
+     * hauteur d'image
+     * @param key la clé
+     * @param height la hauteur d'image
+     * @return un booléen vrai si la clé est valide, faux sinon
+     */
     public static boolean validKey(int key, int height) {
         return (pgcd(2 * (key & 0x7F) + 1, height) == 1);
     }
+
+    /**
+     * Trouve la clé valide la plus proche 
+     * pour une clé donnée par rapport à une hauteur d'image
+     * @param key la clé en question
+     * @param height la hauteur dimage
+     * @return la clé la plus proche
+     */
 
     public static int trouverCleValide(int key, int height) {
         int keyPlus = key + 1;
