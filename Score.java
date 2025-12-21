@@ -159,8 +159,7 @@ public class Score {
      * @param varY les ecarts de la ligne y
      * @return Le coefficient de corrélation ρ(x,y)
      */
-    public static double pearsonCorrelationOpti(int[] rowX, int[] rowY, double moyX, double moyY, double ecartsX,
-            double ecartsY) {
+    public static double pearsonCorrelationOpti(int[] rowX, int[] rowY, double moyX, double moyY, double ecartsX,double ecartsY) {
         double numerator = 0.0;
         for (int i = 0; i < rowX.length; i++) {
             numerator += ((rowX[i] - moyX) * (rowY[i] - moyY));
