@@ -30,9 +30,8 @@ public class CompareImages {
             System.out.println("les pixels différents entre les deux images sont en blanc et ceux qui sont égaux sont noirs.");
 
         }
-        else {
-            System.out.println("nombre de pixels différents entre les 2 images : "+comparerDeuxImages(image1, image2));
-        }
+
+        System.out.println("nombre de pixels différents entre les 2 images : "+comparerDeuxImages(image1, image2));
     }
 
         public static int comparerDeuxImages(BufferedImage image1, BufferedImage image2) {
