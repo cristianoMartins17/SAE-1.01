@@ -49,6 +49,8 @@ public class Brouillimg {
                 System.out.println("Image écrite: " + outPath);
                 break;
             default:
+                System.out.println("processus non reconnu : "+process);
+                System.exit(2);
                 break;
         }
     }
