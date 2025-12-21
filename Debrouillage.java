@@ -25,7 +25,7 @@ public class Debrouillage {
             String outChemin=args[2];
             int[] perm=Brouillimg.generatePermutation(inputimg.getHeight(),cle);
             BufferedImage outImage=Brouillimg.unscrambleLines(inputimg, perm);
-            System.out.print("image écrite : "+outChemin);
+            System.out.println("image écrite : "+outChemin);
             ImageIO.write(outImage, "png",new File(outChemin));
         }
         else {
@@ -187,9 +187,9 @@ public class Debrouillage {
     * @param l2 L'index de la deuxième ligne
     * @return La distance euclidienne entre les deux lignes
     */
-    public static long euclideanDistanceOpti(int[][] imageGris , int[] l1, int[] l2) {
+    public static long euclideanDistanceOpti(int[] l1, int[] l2) {
         long somme=0;
-        for (int i = 0; i < imageGris[0].length; i+=2) {
+        for (int i = 0; i < l1.length; i+=2) {
             int rgb1=l1[i];
             int rgb2=l2[i];
             somme+=(rgb1-rgb2)*(rgb1-rgb2);
@@ -208,7 +208,7 @@ public class Debrouillage {
     public static long scoreEuclideanOpti(int[][] tab2DGL, int[] permutation) {
         long score=0;
         for (int i = 1; i < tab2DGL.length; i=i+1) {
-            score+=euclideanDistanceOpti(tab2DGL,  tab2DGL[permutation[i]],tab2DGL[permutation[i-1]]);
+            score+=euclideanDistanceOpti(tab2DGL[permutation[i]],tab2DGL[permutation[i-1]]);
         }
         return score;
     }
