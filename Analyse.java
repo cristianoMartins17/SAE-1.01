@@ -24,7 +24,7 @@ public class Analyse {
         long nombreCalcul=calculerNbCalculs(methode, hauteur, longueur);
         System.out.println("temps total de débrouillage : "+(Profiler.formaterUnitTemps(Profiler.globalTime)));
         System.out.println("Nombre de calculs : "+nombreCalcul);
-        System.out.println("Nombre de calculs avec pusisance de 10: "+convertisseurNorme(nombreCalcul));
+        System.out.println("Nombre de calculs avec pusisance de 10 : "+convertisseurNorme(nombreCalcul));
         
     }
 
@@ -65,7 +65,7 @@ public class Analyse {
             puissance+=3;
         }
         String exposant=(puissance>0) ?  "x 10^"+puissance : "";
-        String resultat=String.format("%.4s x %s",nombre/(Math.pow(10, puissance)),exposant);
+        String resultat=String.format("%.4f %s",nombre/(Math.pow(10, puissance)),exposant);
         return resultat;
 
     }
