@@ -15,7 +15,6 @@ public class Analyse {
         BufferedImage imageEntree=ImageIO.read(new File(pathEntree));
         int cle=Profiler.analyseBreakKey(imageEntree, methode);
         System.out.println("cle : " +cle);
-        System.out.println(Profiler.globalTime/1e6);
         
     }
     

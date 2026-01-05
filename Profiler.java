@@ -16,6 +16,7 @@ public class Profiler {
     }
 
     public static int analyseBreakKey(BufferedImage image, String string ) {
+        
         BufferedImage1String breakCle = Debrouillage::breakKey;
         long tempsDepart=timestamp();
         int res=breakCle.apply(image, string);
@@ -31,6 +32,7 @@ public class Profiler {
      * @param clock0 instant initial
      * @return expression du temps écoulé depuis clock0
      */
+
     public static String timestamp(long clock0) {
         String result = null;
         if (clock0 > 0) {
@@ -55,7 +57,7 @@ public class Profiler {
 
     public static void init() {
         globalTime=0;
-        nbExecutions=1;
+        nbExecutions=0;
     }
 
     public static Double getGlobalTimeMs() {
