@@ -29,11 +29,13 @@ public class Analyse {
     }
 
     public static boolean estUneMethode(String methode) {
-        switch (methode) {
-            case "Euclid", "EuclidOpti","Pearson","PearsonOpti","Hybrid","Auto":
-                return true;
-            default:
-                return false;
+        if (methode.equals("Euclid") || methode.equals("EuclidOpti") || 
+        methode.equals("Pearson") || methode.equals("PearsonOpti") || 
+        methode.equals("Hybrid") || methode.equals("Auto")) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
