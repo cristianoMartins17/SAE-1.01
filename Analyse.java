@@ -12,10 +12,62 @@ public class Analyse {
         }
         String pathEntree=args[0];
         String methode=args[1];
+        if (!estUneMethode(methode)) {
+            System.out.println("La méthode saisie n'existe pas.");
+            System.exit(2);
+        }
         BufferedImage imageEntree=ImageIO.read(new File(pathEntree));
+        int hauteur=imageEntree.getHeight();
+        int longueur=imageEntree.getWidth();
         int cle=Profiler.analyseBreakKey(imageEntree, methode);
         System.out.println("cle : " +cle);
+        long nombreCalcul=calculerNbCalculs(methode, hauteur, longueur);
+        System.out.println("temps total de débrouillage : "+(Profiler.globalTime)/1e9+" s");
+        System.out.println("Nombre de calculs : "+nombreCalcul);
+        System.out.println("Nombre de calculs avec pusisance de 10: "+convertisseurNorme(nombreCalcul));
         
+    }
+
+    public static boolean estUneMethode(String methode) {
+        switch (methode) {
+            case "Euclid", "EuclidOpti","Pearson","PearsonOpti","Hybrid","Auto":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static long calculerNbCalculs(String methode, int hauteur, int longueur) {
+        if (methode.equals("Auto")) {
+            methode=(hauteur>512) ? "Hybrid" : "PearsonOpti";
+        }
+        switch (methode) {
+            case "Euclid":
+                return 32768L*hauteur*(longueur*3L+1L);
+            case "EuclidOpti":
+                return 32768L*hauteur*longueur*3L;
+            case "Pearson":
+                return 32768L*hauteur*(longueur*12L+6L);
+            case "PearsonOpti":
+                return 32768L*(hauteur*(longueur*4L+4L)+hauteur*longueur*4L);
+            case "Hybrid":
+                return 256L*hauteur*(longueur*8L+5L)+128L*hauteur*longueur*4L;
+            default:
+                return -1;
+        }
+    }
+
+    public static String convertisseurNorme(long nombre) {
+        if (nombre==0) { return "0";}
+        int puissance=0;
+
+        while (nombre/(long)(Math.pow(10, puissance+3))!=0) {
+            puissance+=3;
+        }
+        String exposant=(puissance>0) ?  " x 10^"+puissance : "";
+        String resultat=nombre/(Math.pow(10, puissance))+exposant;
+        return resultat;
+
     }
     
 }
