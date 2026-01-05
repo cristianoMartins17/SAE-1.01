@@ -15,6 +15,16 @@ public class Profiler {
     int apply(BufferedImage image, String string);
     }
 
+    public static int analyseBreakKey(BufferedImage image, String string ) {
+        BufferedImage1String breakCle = Debrouillage::breakKey;
+        long tempsDepart=timestamp();
+        int res=breakCle.apply(image, string);
+        long tempsFinal=timestamp();
+        nbExecutions+=1;
+        globalTime+=tempsFinal-tempsDepart;
+        return res;
+    }
+
     /**
      * Si clock0 est >0, retourne une chaîne de caractères
      * représentant la différence de temps depuis clock0.
@@ -34,19 +44,7 @@ public class Profiler {
         }
         return result;
     }
-    public static String timestamp(long clock0, long clock1) {
-        String result = null;
-        if (clock0 > 0) {
-            double elapsed = (clock1 - clock0) / 1e9;
-            String unit = "s";
-            if (elapsed < 1.0) {
-                elapsed *= 1000.0;
-                unit = "ms";
-            }
-            result = String.format("%.4g%s elapsed", elapsed, unit);
-        }
-        return result;
-    }
+
     /**
      * retourne l'heure courante en ns.
      * @return
@@ -57,6 +55,7 @@ public class Profiler {
 
     public static void init() {
         globalTime=0;
+        nbExecutions=1;
     }
 
     public static Double getGlobalTimeMs() {
