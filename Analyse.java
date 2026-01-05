@@ -43,15 +43,15 @@ public class Analyse {
         }
         switch (methode) {
             case "Euclid":
-                return 32768L*hauteur*(longueur*3L+1L);
+                return 32768L*(hauteur-1)*(longueur*3L+2L);
             case "EuclidOpti":
-                return 32768L*hauteur*longueur*3L;
+                return 32768L*(hauteur-1)*longueur*3+1L;
             case "Pearson":
-                return 32768L*hauteur*(longueur*12L+6L);
+                return 32768L*(hauteur-1)*(longueur*12L+6L);
             case "PearsonOpti":
-                return 32768L*(hauteur*(longueur*4L+4L)+hauteur*longueur*4L);
+                return 32768L*(hauteur-1)*(longueur*4L+4L)+hauteur*(longueur*1+1)+hauteur*longueur*3;
             case "Hybrid":
-                return 256L*hauteur*(longueur*8L+5L)+128L*hauteur*longueur*4L;
+                return 256L*(hauteur-1)*(longueur*4L+4L)+hauteur*(longueur*1+1)+hauteur*longueur*3+128L*hauteur*longueur*4L;
             default:
                 return -1;
         }
