@@ -36,7 +36,21 @@ public class Profiler {
     public static String timestamp(long clock0) {
         String result = null;
         if (clock0 > 0) {
-            double elapsed = (System.nanoTime() - clock0) / 1e6;
+            double elapsed = (System.nanoTime() - clock0) / 1e9;
+            String unit = "s";
+            if (elapsed < 1.0) {
+                elapsed *= 1000.0;
+                unit = "ms";
+            }
+            result = String.format("%.4g%s elapsed", elapsed, unit);
+        }
+        return result;
+    }
+
+    public static String formaterUnitTemps(long duree) {
+        String result = null;
+        if (duree > 0) {
+            double elapsed = (duree) / 1e9;
             String unit = "s";
             if (elapsed < 1.0) {
                 elapsed *= 1000.0;

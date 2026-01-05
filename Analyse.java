@@ -22,7 +22,7 @@ public class Analyse {
         int cle=Profiler.analyseBreakKey(imageEntree, methode);
         System.out.println("cle : " +cle);
         long nombreCalcul=calculerNbCalculs(methode, hauteur, longueur);
-        System.out.println("temps total de débrouillage : "+(Profiler.globalTime)/1e9+" s");
+        System.out.println("temps total de débrouillage : "+(Profiler.formaterUnitTemps(Profiler.globalTime)));
         System.out.println("Nombre de calculs : "+nombreCalcul);
         System.out.println("Nombre de calculs avec pusisance de 10: "+convertisseurNorme(nombreCalcul));
         
@@ -45,13 +45,13 @@ public class Analyse {
             case "Euclid":
                 return 32768L*(hauteur-1)*(longueur*3L+2L);
             case "EuclidOpti":
-                return 32768L*(hauteur-1)*longueur*3+1L;
+                return 32768L*(hauteur-1)*(longueur*3+1L);
             case "Pearson":
-                return 32768L*(hauteur-1)*(longueur*12L+6L);
+                return 32768L*(hauteur-1)*(longueur*12L+7L);
             case "PearsonOpti":
-                return 32768L*(hauteur-1)*(longueur*4L+4L)+hauteur*(longueur*1+1)+hauteur*longueur*3;
+                return 32768L*(hauteur-1)*(longueur*4L+4L)+hauteur*(longueur+1)+hauteur*longueur*3;
             case "Hybrid":
-                return 256L*(hauteur-1)*(longueur*4L+4L)+hauteur*(longueur*1+1)+hauteur*longueur*3+128L*hauteur*longueur*4L;
+                return 256L*(hauteur-1)*(longueur*4L+4L)+hauteur*(longueur+1)+hauteur*longueur*3+128L*(hauteur-1L)*(longueur*3L-1L);
             default:
                 return -1;
         }
@@ -64,8 +64,8 @@ public class Analyse {
         while (nombre/(long)(Math.pow(10, puissance+3))!=0) {
             puissance+=3;
         }
-        String exposant=(puissance>0) ?  " x 10^"+puissance : "";
-        String resultat=nombre/(Math.pow(10, puissance))+exposant;
+        String exposant=(puissance>0) ?  "x 10^"+puissance : "";
+        String resultat=String.format("%.4s x %s",nombre/(Math.pow(10, puissance)),exposant);
         return resultat;
 
     }
