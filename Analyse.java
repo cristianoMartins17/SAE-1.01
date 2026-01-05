@@ -65,7 +65,7 @@ public class Analyse {
             puissance+=3;
         }
         String exposant=(puissance>0) ?  "x 10^"+puissance : "";
-        String resultat=String.format("%.4f %s",nombre/(Math.pow(10, puissance)),exposant);
+        String resultat=String.format("%.4g %s",nombre/(Math.pow(10, puissance)),exposant);
         return resultat;
 
     }
