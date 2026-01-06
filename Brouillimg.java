@@ -16,7 +16,8 @@ public class Brouillimg {
 
     public static void main(String[] args) throws IOException {
         if (args.length < 3) {
-            System.err.println("Usage: java Brouillimg <image_entrée> <clé> [image_sortie] <processus>");
+            System.err.println(
+                "Usage: java Brouillimg <image_entrée> <clé> [image_sortie] <processus>");
             System.exit(1);
         }
         String inPath = args[0];
@@ -66,7 +67,8 @@ public class Brouillimg {
                 System.out.println(
                     "il n'existe pas de clé valide pour cette hauteur");
             } else {
-                System.out.println(keyPlusProche + " est la clé valide la plus proche de votre clé");
+                System.out.println(keyPlusProche + 
+                    " est la clé valide la plus proche de votre clé");
             }
 
         }

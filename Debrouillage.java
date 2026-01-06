@@ -13,7 +13,8 @@ public class Debrouillage {
 
     public static void main(String[] args) throws IOException {
         if (args.length < 2) {
-            System.out.println("Debrouillage <image_brouillée> <méthode utilisée> [creer_image_debrouillée]");
+            System.err.println(
+                "Debrouillage <image_brouillée> <méthode utilisée> [creer_image_debrouillée]");
             System.exit(1);
         }
         BufferedImage inputimg = ImageIO.read(new File(args[0]));
@@ -21,7 +22,7 @@ public class Debrouillage {
         long tempsDepart = System.currentTimeMillis();
         int cle = breakKey(inputimg, methode);
         if (cle == -1) {
-            System.out.println("methode non valide");
+            System.err.println("methode non valide");
             System.exit(2);
         }
         long tempsFin = System.currentTimeMillis();
@@ -33,15 +34,18 @@ public class Debrouillage {
             ImageIO.write(outImage, "png", new File(outChemin));
         }
         System.out.println("La clé pour débrouiller l'image vaut : " + cle);
-        System.out.println("temps de débrouillage : " + ((double) (tempsFin - tempsDepart)) / 1000 + " s");
+        System.out.println("temps de débrouillage : " +
+        ((double) (tempsFin - tempsDepart)) / 1000 + " s");
     }
 
     /**
-     * Casse la clé de chiffrement en testant toutes les clés possibles (1 à 32767)
+     * Casse la clé de chiffrement en testant toutes 
+     * les clés possibles (1 à 32767)
      * en utilisant le score euclidien comme critère de qualité.
      * 
      * @param image L'image chiffrée à débrouiller
-     * @return La clé qui donne le meilleur score euclidien (distance minimale)
+     * @return La clé qui donne le meilleur 
+     * score euclidien (distance minimale)
      */
     // plûtot lent
     public static int breakKeyEuclid(BufferedImage image) {
@@ -107,7 +111,8 @@ public class Debrouillage {
      */
     // il explose les autres break key
     public static int breakKeyHybrid(BufferedImage image) {
-        int[][] tab2DGL = Brouillimg.rgb2gl(image); // on trouve le meilleur s puis on l'utilise pour trouver la clé
+        int[][] tab2DGL = Brouillimg.rgb2gl(image); 
+        // on trouve le meilleur s puis on l'utilise pour trouver la clé
         int meilleurS = Score.trouverMeilleurS(tab2DGL);
         return Score.trouverMeilleurCle(tab2DGL, meilleurS);
     }
@@ -175,8 +180,8 @@ public class Debrouillage {
             case "Auto":
                 /*
                  * on fait ca car des fois, pour une image petite, la méthode hybride
-                 * renvoie la clé pour débrouiller l'image mais en invérsée. On utilise donc
-                 * pearsonOpti
+                 * renvoie la clé pour débrouiller l'image mais en invérsée.
+                 *  On utilise donc pearson
                  * car l'image est petite et qu'il est fiable
                  */
                 if (image.getHeight() < 512) {

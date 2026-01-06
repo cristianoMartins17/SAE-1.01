@@ -1,7 +1,12 @@
+/*MARTINS Cristiano (référent)
+  TACHERIFT Sofiane
+  groupe 20
+*/
+
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 public class Analyse {
 
@@ -110,7 +115,8 @@ public class Analyse {
                 break;
         }
 
-        String resultat=String.format("%.4g %s",nombre/(Math.pow(10, puissance)),grandeur);
+        String resultat=String.format("%.4g %s",
+        nombre/(Math.pow(10, puissance)),grandeur);
         return resultat;
 
     }

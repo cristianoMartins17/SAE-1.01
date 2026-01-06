@@ -1,6 +1,8 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.*;
+/*MARTINS Cristiano (référent)
+  TACHERIFT Sofiane
+  groupe 20
+*/
+
 import java.awt.image.BufferedImage;
 
 public class Profiler {
