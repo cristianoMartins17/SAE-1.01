@@ -32,7 +32,7 @@ public class Analyse {
         if (methode.equals("Euclid") || methode.equals("EuclidOpti") || 
         methode.equals("Pearson") || methode.equals("PearsonOpti") || 
         methode.equals("Hybrid") || methode.equals("Auto")
-        || methode.equals("Manathan")) {
+        || methode.equals("Manhattan")) {
             return true;
         }
         else {
@@ -53,7 +53,7 @@ public class Analyse {
                 return 32768L*(hauteur-1)*(longueur*4L+4L)+hauteur*(longueur+1)+hauteur*longueur*3;
             case "Hybrid":
                 return 256L*(hauteur-1)*(longueur*4L+4L)+hauteur*(longueur+1)+hauteur*longueur*3+128L*(hauteur-1L)*(longueur*3L-1L);
-            case "Manathan":
+            case "Manhattan":
                 return 384*(hauteur-1)*(longueur*3L+1L);
             default:
                 return -1;

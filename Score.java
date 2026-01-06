@@ -240,7 +240,7 @@ public class Score {
 
 
 
-    public static long manathanDistance(int[] rowX, int[] rowY) {
+    public static long manhattanDistance(int[] rowX, int[] rowY) {
         long score=0;
         for (int i = 0; i < rowX.length; i++) {
             score+=Math.abs(rowX[i]-rowY[i]);
@@ -248,12 +248,12 @@ public class Score {
         return score;
     }
 
-    public static long scoreManathan(int[][] tab2DGL, int[] permutation) {
+    public static long scoreManhattan(int[][] tab2DGL, int[] permutation) {
         long score=0;
         for (int i = 0; i < tab2DGL.length-1; i++) {
             int l1=permutation[i];
             int l2=permutation[i+1];
-            score+=manathanDistance(tab2DGL[l1], tab2DGL[l2]);       
+            score+=manhattanDistance(tab2DGL[l1], tab2DGL[l2]);       
         }
         return score;
     }

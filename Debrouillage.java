@@ -144,7 +144,7 @@ public class Debrouillage {
         int meilleurS=0;
         for (int s= 0; s < 128; s++) {
             int[] permutation = Brouillimg.generatePermutation(hauteur, s);
-            long scoreCandidat=Score.scoreManathan(tab2DGL, permutation);
+            long scoreCandidat=Score.scoreManhattan(tab2DGL, permutation);
             if (scoreCandidat<scoreMin) {
                 scoreMin=scoreCandidat;
                 meilleurS=s;
@@ -154,7 +154,7 @@ public class Debrouillage {
         for (int r = 0; r < 256; r++) {
             int cleCandidate=(r << 7) | meilleurS;
             int[] permutation = Brouillimg.generatePermutation(hauteur, cleCandidate);
-            long scoreCandidat=Score.scoreManathan(tab2DGL, permutation);
+            long scoreCandidat=Score.scoreManhattan(tab2DGL, permutation);
             if (scoreCandidat<scoreMin) {
                 scoreMin=scoreCandidat;
                 meilleurCle=cleCandidate;
@@ -188,7 +188,7 @@ public class Debrouillage {
                 return breakKeyPearson(image);
             case "EuclidOpti":
                 return breakKeyEuclidOpti(image);
-            case "Manathan":
+            case "Manhattan":
                 return breakKeyManathan(image);
             case "Hybrid":
                 return breakKeyHybrid(image);
