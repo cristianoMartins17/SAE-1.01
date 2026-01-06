@@ -67,8 +67,25 @@ public class Analyse {
         while (nombre/(long)(Math.pow(10, puissance+3))!=0) {
             puissance+=3;
         }
-        String exposant=(puissance>0) ?  "x 10^"+puissance : "";
-        String resultat=String.format("%.4g %s",nombre/(Math.pow(10, puissance)),exposant);
+        String grandeur="";
+        switch (puissance) {
+            case 0:
+                break;
+            case 3:
+                grandeur="k";
+                break;
+            case 6:
+                grandeur="millions";
+                break;
+            case 9:
+                grandeur="milliards";
+                break;
+            default:
+                grandeur="x 10^"+puissance;
+                break;
+        }
+
+        String resultat=String.format("%.4g %s",nombre/(Math.pow(10, puissance)),grandeur);
         return resultat;
 
     }

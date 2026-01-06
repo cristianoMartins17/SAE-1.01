@@ -266,6 +266,7 @@ public class Brouillimg {
      * @return la clé la plus proche
      */
 
+    
     public static int trouverCleValide(int key, int height) {
         int keyPlus = key + 1;
         int keyMoins = key - 1;

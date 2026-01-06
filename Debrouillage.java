@@ -139,7 +139,7 @@ public class Debrouillage {
 
     public static int breakKeyManathan(BufferedImage image) {
         int hauteur=image.getHeight();
-        int[][] tab2DGL=image2RGB(image);
+        int[][] tab2DGL=Brouillimg.rgb2gl(image);
         long scoreMin=Long.MAX_VALUE;
         int meilleurS=0;
         for (int s= 0; s < 128; s++) {
