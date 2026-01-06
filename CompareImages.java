@@ -41,7 +41,12 @@ public class CompareImages {
         System.out.println("nombre de pixels différents entre les 2 images : " + comparerDeuxImages(image1, image2));
     }
 
-
+    /**
+     * trouve le nombre de pixels différents entre deux images de mêmes dimensions
+     * @param image1 la premiere image
+     * @param image2 la deuxieme image
+     * @return le nombre de pixels qui diffèrente
+     */
     public static int comparerDeuxImages(BufferedImage image1, BufferedImage image2) {
         int compteur = 0;
         for (int y = 0; y < image1.getHeight(); y++) {
@@ -56,6 +61,15 @@ public class CompareImages {
 
         return compteur;
     }
+
+    /**
+     * crée une image qui affiche les pixels différents entre deux images.
+     * chaque pixel qui diffère sera blanc dans la nouvelle image.
+     * Sinon il sera noir
+     * @param image1 la premiere image
+     * @param image2 la deuxieme image
+     * @return l'image des pixels différents
+     */
 
     public static BufferedImage imageDifferences(BufferedImage image1, BufferedImage image2) {
         BufferedImage resultat = new BufferedImage(image1.getWidth(), image1.getHeight(), BufferedImage.TYPE_INT_ARGB);

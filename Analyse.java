@@ -27,6 +27,11 @@ public class Analyse {
         System.out.println("Nombre de calculs avec pusisance de 10 : "+convertisseurNorme(nombreCalcul));
         
     }
+    /**
+     * indique si la méthode existe ou non
+     * @param methode la méthode en question
+     * @return un booléen
+     */
 
     public static boolean estUneMethode(String methode) {
         if (methode.equals("Euclid") || 
@@ -40,6 +45,14 @@ public class Analyse {
         }
     }
 
+    /**
+     * indique le nombre de calculs pour casser la clé
+     * selon la méthode donnée et les dimensions de l'image
+     * @param methode la méthode 
+     * @param hauteur la hauteur de l'image
+     * @param longueur la longueur de l'image
+     * @return le nombre de calculs
+     */
     public static long calculerNbCalculs(String methode, int hauteur, int longueur) {
         if (methode.equals("Auto")) {
             methode=(hauteur>512) ? "Hybrid" : "Pearson";
@@ -58,6 +71,12 @@ public class Analyse {
         }
     }
 
+    /**
+     * permet d'écrire un nombre en écriture humaine, avec des
+     * puissances de 10 intuitives (3,6,9).
+     * @param nombre un nombre
+     * @return le string correspondant à l'écriture humaine.
+     */
     public static String convertisseurNorme(long nombre) {
         if (nombre==0) { return "0";}
         int puissance=0;

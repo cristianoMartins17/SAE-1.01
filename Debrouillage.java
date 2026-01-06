@@ -112,6 +112,13 @@ public class Debrouillage {
         return Score.trouverMeilleurCle(tab2DGL, meilleurS);
     }
 
+    /**
+     * cette fonction casse la clé selon le critère de manhattan,
+     * on optimise en trouvant d'abord le meilleur s puis 
+     * en trouvant le r à partir de ce s
+     * @param image l'image à casser la clé
+     * @return la clé 
+     */
     public static int breakKeyManathan(BufferedImage image) {
         int hauteur=image.getHeight();
         int[][] tab2DGL=Brouillimg.rgb2gl(image);

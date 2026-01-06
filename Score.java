@@ -176,7 +176,13 @@ public class Score {
 
     //==============================Manhattan distance=========================
 
-
+    /**
+     * calcule la distance manhattan entre deux lignes, plus elle est petite, moins
+     * les lignes sont différentes
+     * @param rowX la ligne X
+     * @param rowY la ligne Y
+     * @return la distance manhattan
+     */
     public static long manhattanDistance(int[] rowX, int[] rowY) {
         long score=0;
         for (int i = 0; i < rowX.length; i++) {
@@ -184,6 +190,14 @@ public class Score {
         }
         return score;
     }
+
+    /**
+     * calcule le score d'une image selon le score de manhattan. On 
+     * additionne la distance manhattan de chaque paire de ligne.
+     * @param tab2DGL le tableau de niveaux de gris de l'image brouillée
+     * @param permutation la permutation de la clé testée
+     * @return le score total
+     */
 
     public static long scoreManhattan(int[][] tab2DGL, int[] permutation) {
         long score=0;
