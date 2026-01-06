@@ -60,30 +60,7 @@ public class Debrouillage {
         return meilleurCandidat;
     }
 
-    /**
-     * Casse la clé de chiffrement en testant toutes les clés possibles (1 à 32767)
-     * en utilisant le score de Pearson comme critère de qualité.
-     * 
-     * @param image L'image chiffrée à débrouiller
-     * @return La clé qui donne le meilleur score de Pearson (corrélation maximale)
-     */
-    // très lent
-    public static int breakKeyPearson(BufferedImage image) {
-        int[][] tab2DGL = Brouillimg.rgb2gl(image);
-        int hauteur = image.getHeight();
-        // Pour Pearson, on cherche le MAXIMUM (corrélation la plus élevée)
-        double scoreMax = -Double.MAX_VALUE;
-        int meilleurCandidat = 0;
-        for (int i = 0; i < 32768; i++) {
-            int[] permCandidat = Brouillimg.generatePermutation(hauteur, i);
-            double score = Score.scorePearson(tab2DGL, permCandidat);
-            if (score > scoreMax) {
-                scoreMax = score;
-                meilleurCandidat = i;
-            }
-        }
-        return meilleurCandidat;
-    }
+
 
     /**
      * Casse la clé de chiffrement en testant toutes les clés possibles (1 à 32767)
@@ -119,7 +96,7 @@ public class Debrouillage {
      * @return la clé qui a été utilisée pour permuter les lignes de l'image
      */
     // environ 2x plus rapide que le breakKeyPearson
-    public static int breakKeyPearsonOpti(BufferedImage image) {
+    public static int breakKeyPearson(BufferedImage image) {
         int[][] tab2DGL = Brouillimg.rgb2gl(image);
         double[] moyennes = new double[tab2DGL.length];
         double[] ecarts = new double[tab2DGL.length];
@@ -137,7 +114,7 @@ public class Debrouillage {
         int meilleurCandidat = 0;
         for (int i = 0; i < 32768; i++) {
             int[] permCandidat = Brouillimg.generatePermutation(hauteur, i);
-            double score = Score.scorePearsonOpti(tab2DGL, permCandidat, moyennes, ecarts);
+            double score = Score.scorePearson(tab2DGL, permCandidat, moyennes, ecarts);
             // Si ce score est plus grand que le meilleur score actuel, on le met à jour
             if (score > scoreMax) {
                 scoreMax = score;
@@ -160,6 +137,42 @@ public class Debrouillage {
         return Score.trouverMeilleurCle(tab2DGL, meilleurS);
     }
 
+    public static int breakKeyManathan(BufferedImage image) {
+        int hauteur=image.getHeight();
+        int[][] tab2DGL=image2RGB(image);
+        long scoreMin=Long.MIN_VALUE;
+        int meilleurS=0;
+        for (int s= 0; s < 128; s++) {
+            int[] permutation = Brouillimg.generatePermutation(hauteur, s);
+            long scoreCandidat=Score.scoreManathan(tab2DGL, permutation);
+            if (scoreCandidat<scoreMin) {
+                scoreMin=scoreCandidat;
+                meilleurS=s;
+            }   
+        }
+        int meilleurCle=meilleurS;
+        for (int r = 0; r < 256; r++) {
+            int cleCandidate=(r << 7) | meilleurS;
+            int[] permutation = Brouillimg.generatePermutation(hauteur, meilleurCle);
+            long scoreCandidat=Score.scoreManathan(tab2DGL, permutation);
+            if (scoreCandidat<scoreMin) {
+                scoreMin=scoreCandidat;
+                meilleurCle=cleCandidate;
+            }       
+        }
+        return meilleurCle;
+    }
+
+    public static int[][] image2RGB(BufferedImage image) {
+        int[][] res = new int[image.getHeight()][image.getWidth()];
+        for (int i = 0; i < res.length; i++) {
+            for (int j = 0; j < res[0].length; j++) {
+                res[i][j]=image.getRGB(j, i);      
+            } 
+        }
+        return res;
+    }
+
     /**
      * Cette fonction renvoie la clé en prenant en charge plusieurs méthodes
      * 
@@ -175,8 +188,8 @@ public class Debrouillage {
                 return breakKeyPearson(image);
             case "EuclidOpti":
                 return breakKeyEuclidOpti(image);
-            case "PearsonOpti":
-                return breakKeyPearsonOpti(image);
+            case "Manathan":
+                return breakKeyManathan(image);
             case "Hybrid":
                 return breakKeyHybrid(image);
             case "Auto":
@@ -187,7 +200,7 @@ public class Debrouillage {
                  * car l'image est petite et qu'il est fiable
                  */
                 if (image.getHeight() < 512) {
-                    return breakKeyPearsonOpti(image);
+                    return breakKeyPearson(image);
                 } else {
                     return breakKeyHybrid(image);
                 }

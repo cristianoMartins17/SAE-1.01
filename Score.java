@@ -53,27 +53,19 @@ public class Score {
      * 
      * @param rowX La première ligne
      * @param rowY La deuxième ligne
+     * @param moyX la moyenne de la ligne x
+     * @param moyY la moyenne de la ligne y
+     * @param varX les ecarts de la ligne x
+     * @param varY les ecarts de la ligne y
      * @return Le coefficient de corrélation ρ(x,y)
      */
-    public static double pearsonCorrelation(int[] rowX, int[] rowY) {
-        int longueur = rowX.length;
+    public static double pearsonCorrelation(int[] rowX, int[] rowY, double moyX, double moyY, double ecartsX,double ecartsY) {
         double numerator = 0.0;
-        double moyenneX = 0.0;
-        double moyenneY = 0.0;
-        for (int i = 0; i < longueur; i++) {
-            moyenneX += rowX[i];
-            moyenneY += rowY[i];
+        for (int i = 0; i < rowX.length; i++) {
+            numerator += ((rowX[i] - moyX) * (rowY[i] - moyY));
         }
-        moyenneX /= longueur;
-        moyenneY /= longueur;
-        double sumX = 0.0;
-        double sumY = 0.0;
-        for (int i = 0; i < longueur; i++) {
-            numerator += (rowX[i] - moyenneX) * (rowY[i] - moyenneY);
-            sumX += (rowX[i] - moyenneX) * (rowX[i] - moyenneX);
-            sumY += (rowY[i] - moyenneY) * (rowY[i] - moyenneY);
-        }
-        double denominator = Math.sqrt(sumX) * Math.sqrt(sumY);
+
+        double denominator = (Math.sqrt(ecartsX) * Math.sqrt(ecartsY));
         if (denominator == 0.0) {
             return 0.0;
         }
@@ -83,17 +75,25 @@ public class Score {
     /**
      * Calcule le score de Pearson total d'une image en sommant les corrélations
      * entre chaque paire de lignes consécutives.
-     * Plus le score est élevé, plus l'image est probablement correcte.
+     * Plus le score est élevé, plus l'image est probablement correcte. Le score
+     * euclidien a été amélioré
      * 
-     * @param image La matrice de l'image en niveaux de gris
+     * @param tag2DGL     La matrice de l'image en niveaux de gris
+     * @param permutation la permutation que l'on teste
+     * @param moyennes    le tableau qui contient la moyenne de chaque ligne i
+     * @param ecarts      le tableau qui contient les ecarts de chaque ligne i
      * @return Le score de Pearson total (plus grand = meilleur)
      */
-    public static double scorePearson(int[][] tab2DGL, int[] permutation) {
+    public static double scorePearson(int[][] tab2DGL, int[] permutation, double[] moyennes, double[] ecarts) {
         double scoreTotal = 0.0;
-        // Parcourir toutes les paires de lignes consécutives
-        for (int i = 0; i < tab2DGL.length - 1; i++) {
-            // Calculer la corrélation entre la ligne i et la ligne i+1
-            double correlation = pearsonCorrelation(tab2DGL[permutation[i]], tab2DGL[permutation[i + 1]]);
+        for (int i = 0; i < tab2DGL.length - 1; i++) { /* On précalcule les moyennes et les écarts */
+            double moyX = moyennes[permutation[i]];
+            double moyY = moyennes[permutation[i + 1]];
+            double ecartsX = ecarts[permutation[i]];
+            double ecartsY = ecarts[permutation[i + 1]];
+            double correlation = pearsonCorrelation(tab2DGL[permutation[i]],
+                    tab2DGL[permutation[i + 1]], moyX,
+                    moyY, ecartsX, ecartsY);
             // Ajouter cette corrélation au score total
             scoreTotal += correlation;
         }
@@ -145,64 +145,6 @@ public class Score {
 
     // ===============================================================================================
 
-    // =================================PearsonOpti===============================================================
-
-    /**
-     * Calcule le coefficient de corrélation de Pearson entre deux lignes.
-     * Le résultat est compris entre -1 et 1 (1 = corrélation parfaite).
-     * 
-     * @param rowX La première ligne
-     * @param rowY La deuxième ligne
-     * @param moyX la moyenne de la ligne x
-     * @param moyY la moyenne de la ligne y
-     * @param varX les ecarts de la ligne x
-     * @param varY les ecarts de la ligne y
-     * @return Le coefficient de corrélation ρ(x,y)
-     */
-    public static double pearsonCorrelationOpti(int[] rowX, int[] rowY, double moyX, double moyY, double ecartsX,double ecartsY) {
-        double numerator = 0.0;
-        for (int i = 0; i < rowX.length; i++) {
-            numerator += ((rowX[i] - moyX) * (rowY[i] - moyY));
-        }
-
-        double denominator = (Math.sqrt(ecartsX) * Math.sqrt(ecartsY));
-        if (denominator == 0.0) {
-            return 0.0;
-        }
-        return numerator / denominator;
-    }
-
-    /**
-     * Calcule le score de Pearson total d'une image en sommant les corrélations
-     * entre chaque paire de lignes consécutives.
-     * Plus le score est élevé, plus l'image est probablement correcte. Le score
-     * euclidien a été amélioré
-     * 
-     * @param tag2DGL     La matrice de l'image en niveaux de gris
-     * @param permutation la permutation que l'on teste
-     * @param moyennes    le tableau qui contient la moyenne de chaque ligne i
-     * @param ecarts      le tableau qui contient les ecarts de chaque ligne i
-     * @return Le score de Pearson total (plus grand = meilleur)
-     */
-    public static double scorePearsonOpti(int[][] tab2DGL, int[] permutation, double[] moyennes, double[] ecarts) {
-        double scoreTotal = 0.0;
-        for (int i = 0; i < tab2DGL.length - 1; i++) { /* On précalcule les moyennes et les écarts */
-            double moyX = moyennes[permutation[i]];
-            double moyY = moyennes[permutation[i + 1]];
-            double ecartsX = ecarts[permutation[i]];
-            double ecartsY = ecarts[permutation[i + 1]];
-            double correlation = pearsonCorrelationOpti(tab2DGL[permutation[i]],
-                    tab2DGL[permutation[i + 1]], moyX,
-                    moyY, ecartsX, ecartsY);
-            // Ajouter cette corrélation au score total
-            scoreTotal += correlation;
-        }
-
-        return scoreTotal;
-    }
-
-    // ========================================================================================================================================
-
     // ====================================Hybrid=====================================================================================
 
     /**
@@ -253,7 +195,7 @@ public class Score {
         for (int r = 0; r < 256; r++) {
             int cleCandidat = (r << 7) | meilleurS;
             int[] permCandidat = Brouillimg.generatePermutation(hauteur, cleCandidat);
-            double score = scorePearsonOpti(tab2DGL, permCandidat, moyennes, ecarts);
+            double score = scorePearson(tab2DGL, permCandidat, moyennes, ecarts);
             if (score > scoreMax) {
                 scoreMax = score;
                 meilleurCleCandidate = cleCandidat;
@@ -295,5 +237,26 @@ public class Score {
         }
         return ecarts;
     }
+
+
+
+    public static long manathanDistance(int[] rowX, int[] rowY) {
+        long score=0;
+        for (int i = 0; i < rowX.length; i++) {
+            score+=Math.abs(rowX[i]-rowY[i]);
+        }
+        return score;
+    }
+
+    public static long scoreManathan(int[][] tab2DGL, int[] permutation) {
+        long score=0;
+        for (int i = 0; i < tab2DGL.length-1; i++) {
+            int l1=permutation[i];
+            int l2=permutation[i+1];
+            score+=manathanDistance(tab2DGL[l1], tab2DGL[permutation[l2]]);       
+        }
+        return score;
+    }
+    
 
 }
