@@ -7,6 +7,7 @@ public class Score {
 
     // ==================Euclid================================================================
 
+
     /**
      * Calcule la distance euclidienne entre deux lignes d'une image en niveaux de
      * gris.
@@ -16,34 +17,41 @@ public class Score {
      * @param l2        L'index de la deuxième ligne
      * @return La distance euclidienne entre les deux lignes
      */
-    public static double euclideanDistance(int[] l1, int[] l2) {
-        double somme = 0.0;
-        for (int i = 0; i < l1.length; i++) {
+    public static long euclideanDistance(int[] l1, int[] l2) {
+        long somme = 0;
+        for (int i = 0; i < l1.length; i += 1) {
             int rgb1 = l1[i];
             int rgb2 = l2[i];
             somme += (rgb1 - rgb2) * (rgb1 - rgb2);
         }
-        return Math.sqrt(somme);
+        return (somme);
     }
 
     /**
-     * Calcule le score euclidien total d'une image en sommant les distances
-     * entre chaque paire de lignes consécutives.
+     * Calcule le carré de la distance euclidienne
+     * entre chaque paire de lignes consécutives et utilise le type long pour un
+     * gain de temps.
      * Plus le score est faible, plus l'image est probablement correcte.
      * 
-     * @param imageGris La matrice de l'image en niveaux de gris
+     * @param tab2GL      La matrice de l'image en niveaux de gris
+     * @param permutation Le tableau de permutation
      * @return Le score euclidien total (plus petit = meilleur)
      */
-    public static double scoreEuclidean(int[][] tab2DGL, int[] permutation) {
-        double score = 0.0;
+    public static long scoreEuclidean(int[][] tab2DGL, int[] permutation) {
+        long score = 0;
         for (int i = 1; i < tab2DGL.length; i = i + 1) {
             score += euclideanDistance(tab2DGL[permutation[i]],
                     tab2DGL[permutation[i - 1]]);
         }
-        return (score);
+        return score;
     }
 
-    // =======================================================================================
+    //=========================================================================
+
+
+
+
+
 
     // ===========================Pearson==================================================
 
@@ -103,47 +111,7 @@ public class Score {
 
     // ======================================================================================================
 
-    // ====================================EuclidOpti=========================================================
 
-    /**
-     * Calcule la distance euclidienne entre deux lignes d'une image en niveaux de
-     * gris.
-     * 
-     * @param imageGris La matrice de l'image en niveaux de gris
-     * @param l1        L'index de la première ligne
-     * @param l2        L'index de la deuxième ligne
-     * @return La distance euclidienne entre les deux lignes
-     */
-    public static long euclideanDistanceOpti(int[] l1, int[] l2) {
-        long somme = 0;
-        for (int i = 0; i < l1.length; i += 1) {
-            int rgb1 = l1[i];
-            int rgb2 = l2[i];
-            somme += (rgb1 - rgb2) * (rgb1 - rgb2);
-        }
-        return somme;
-    }
-
-    /**
-     * Calcule le carré de la distance euclidienne
-     * entre chaque paire de lignes consécutives et utilise le type long pour un
-     * gain de temps.
-     * Plus le score est faible, plus l'image est probablement correcte.
-     * 
-     * @param tab2GL      La matrice de l'image en niveaux de gris
-     * @param permutation Le tableau de permutation
-     * @return Le score euclidien total (plus petit = meilleur)
-     */
-    public static long scoreEuclideanOpti(int[][] tab2DGL, int[] permutation) {
-        long score = 0;
-        for (int i = 1; i < tab2DGL.length; i = i + 1) {
-            score += euclideanDistanceOpti(tab2DGL[permutation[i]],
-                    tab2DGL[permutation[i - 1]]);
-        }
-        return score;
-    }
-
-    // ===============================================================================================
 
     // ====================================Hybrid=====================================================================================
 
@@ -162,7 +130,7 @@ public class Score {
         long scoreMin = Long.MAX_VALUE;
         for (int s = 0; s < 128; s++) {
             int[] permCandidatS = Brouillimg.generatePermutation(hauteur, s);
-            long score = scoreEuclideanOpti(tab2DGL, permCandidatS);
+            long score = scoreEuclidean(tab2DGL, permCandidatS);
             if (score < scoreMin) {
                 scoreMin = score;
                 meilleurS = s;
@@ -206,6 +174,30 @@ public class Score {
 
     // ==================================================================================
 
+    //==============================Manhattan distance=========================
+
+
+    public static long manhattanDistance(int[] rowX, int[] rowY) {
+        long score=0;
+        for (int i = 0; i < rowX.length; i++) {
+            score+=Math.abs(rowX[i]-rowY[i]);
+        }
+        return score;
+    }
+
+    public static long scoreManhattan(int[][] tab2DGL, int[] permutation) {
+        long score=0;
+        for (int i = 0; i < tab2DGL.length-1; i++) {
+            int l1=permutation[i];
+            int l2=permutation[i+1];
+            score+=manhattanDistance(tab2DGL[l1], tab2DGL[l2]);       
+        }
+        return score;
+    }
+
+    //==========================================================================================
+
+
     /**
      * calcule la moyenne d'une ligne
      * 
@@ -236,26 +228,6 @@ public class Score {
             ecarts += difference * difference;
         }
         return ecarts;
-    }
-
-
-
-    public static long manhattanDistance(int[] rowX, int[] rowY) {
-        long score=0;
-        for (int i = 0; i < rowX.length; i++) {
-            score+=Math.abs(rowX[i]-rowY[i]);
-        }
-        return score;
-    }
-
-    public static long scoreManhattan(int[][] tab2DGL, int[] permutation) {
-        long score=0;
-        for (int i = 0; i < tab2DGL.length-1; i++) {
-            int l1=permutation[i];
-            int l2=permutation[i+1];
-            score+=manhattanDistance(tab2DGL[l1], tab2DGL[l2]);       
-        }
-        return score;
     }
     
 

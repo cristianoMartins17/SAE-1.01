@@ -29,8 +29,8 @@ public class Analyse {
     }
 
     public static boolean estUneMethode(String methode) {
-        if (methode.equals("Euclid") || methode.equals("EuclidOpti") || 
-        methode.equals("Pearson") || methode.equals("PearsonOpti") || 
+        if (methode.equals("Euclid") || 
+        methode.equals("Pearson") || 
         methode.equals("Hybrid") || methode.equals("Auto")
         || methode.equals("Manhattan")) {
             return true;
@@ -42,12 +42,10 @@ public class Analyse {
 
     public static long calculerNbCalculs(String methode, int hauteur, int longueur) {
         if (methode.equals("Auto")) {
-            methode=(hauteur>512) ? "Hybrid" : "PearsonOpti";
+            methode=(hauteur>512) ? "Hybrid" : "Pearson";
         }
         switch (methode) {
             case "Euclid":
-                return 32768L*(hauteur-1)*(longueur*3L+2L);
-            case "EuclidOpti":
                 return 32768L*(hauteur-1)*(longueur*3+1L);
             case "Pearson":
                 return 32768L*(hauteur-1)*(longueur*4L+4L)+hauteur*(longueur+1)+hauteur*longueur*3;
@@ -67,12 +65,13 @@ public class Analyse {
         while (nombre/(long)(Math.pow(10, puissance+3))!=0) {
             puissance+=3;
         }
-        String grandeur="";
+        String grandeur;
         switch (puissance) {
             case 0:
+                grandeur="";
                 break;
             case 3:
-                grandeur="k";
+                grandeur="milles";
                 break;
             case 6:
                 grandeur="millions";

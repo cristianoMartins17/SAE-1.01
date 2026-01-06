@@ -63,31 +63,6 @@ public class Debrouillage {
 
 
     /**
-     * Casse la clé de chiffrement en testant toutes les clés possibles (1 à 32767)
-     * en utilisant le score euclidien optimisé comme de qualité.
-     * Le score euclidien a été optimisé pour prendre le moins de temps possible
-     * 
-     * @param image L'image chiffrée à débrouiller
-     * @return La clé qui donne le meilleur score euclidien (distance minimale)
-     */
-    // environ 2.5 fois plus rapide que le breakKeyEuclid normal
-    public static int breakKeyEuclidOpti(BufferedImage image) {
-        int hauteur = image.getHeight();
-        long distanceMin = Long.MAX_VALUE;
-        int[][] tab2DGL = Brouillimg.rgb2gl(image);
-        int meilleurCandidat = 0;
-        for (int i = 0; i < 32768; i++) {
-            int[] permCandidat = Brouillimg.generatePermutation(hauteur, i);
-            long score = Score.scoreEuclideanOpti(tab2DGL, permCandidat);
-            if (score < distanceMin) {
-                distanceMin = score;
-                meilleurCandidat = i;
-            }
-        }
-        return meilleurCandidat;
-    }
-
-    /**
      * Debrouille une image par brute-force en utilisant
      * le score euclidien comme critère de qualité en utilisant
      * une optimisation du score d'euclide
@@ -186,8 +161,6 @@ public class Debrouillage {
                 return breakKeyEuclid(image);
             case "Pearson":
                 return breakKeyPearson(image);
-            case "EuclidOpti":
-                return breakKeyEuclidOpti(image);
             case "Manhattan":
                 return breakKeyManathan(image);
             case "Hybrid":
