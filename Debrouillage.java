@@ -140,7 +140,7 @@ public class Debrouillage {
     public static int breakKeyManathan(BufferedImage image) {
         int hauteur=image.getHeight();
         int[][] tab2DGL=image2RGB(image);
-        long scoreMin=Long.MIN_VALUE;
+        long scoreMin=Long.MAX_VALUE;
         int meilleurS=0;
         for (int s= 0; s < 128; s++) {
             int[] permutation = Brouillimg.generatePermutation(hauteur, s);
@@ -153,7 +153,7 @@ public class Debrouillage {
         int meilleurCle=meilleurS;
         for (int r = 0; r < 256; r++) {
             int cleCandidate=(r << 7) | meilleurS;
-            int[] permutation = Brouillimg.generatePermutation(hauteur, meilleurCle);
+            int[] permutation = Brouillimg.generatePermutation(hauteur, cleCandidate);
             long scoreCandidat=Score.scoreManathan(tab2DGL, permutation);
             if (scoreCandidat<scoreMin) {
                 scoreMin=scoreCandidat;

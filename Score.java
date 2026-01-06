@@ -253,7 +253,7 @@ public class Score {
         for (int i = 0; i < tab2DGL.length-1; i++) {
             int l1=permutation[i];
             int l2=permutation[i+1];
-            score+=manathanDistance(tab2DGL[l1], tab2DGL[permutation[l2]]);       
+            score+=manathanDistance(tab2DGL[l1], tab2DGL[l2]);       
         }
         return score;
     }
