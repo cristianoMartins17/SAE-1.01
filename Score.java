@@ -99,9 +99,10 @@ public class Score {
             double moyY = moyennes[permutation[i + 1]];
             double ecartsX = ecarts[permutation[i]];
             double ecartsY = ecarts[permutation[i + 1]];
-            double correlation = pearsonCorrelation(tab2DGL[permutation[i]],
-                    tab2DGL[permutation[i + 1]], moyX,
-                    moyY, ecartsX, ecartsY);
+            double correlation = pearsonCorrelation(
+                    tab2DGL[permutation[i]],tab2DGL[permutation[i + 1]],
+                    moyX,moyY,
+                    ecartsX, ecartsY);
             // Ajouter cette corrélation au score total
             scoreTotal += correlation;
         }

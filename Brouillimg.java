@@ -59,10 +59,12 @@ public class Brouillimg {
         }
         // Si la clé n'est pas valide pour la hauteur, on le signale
         if (!validKey(key, height)) {
-            System.out.println("cle non valide , la permutation n'est pas reversible");
+            System.out.println(
+                "cle non valide , la permutation n'est pas reversible");
             int keyPlusProche = trouverCleValide(key, height);
             if (keyPlusProche == -1) {
-                System.out.println("il n'existe pas de clé valide pour cette hauteur");
+                System.out.println(
+                    "il n'existe pas de clé valide pour cette hauteur");
             } else {
                 System.out.println(keyPlusProche + " est la clé valide la plus proche de votre clé");
             }
@@ -121,7 +123,8 @@ public class Brouillimg {
         int width = inputImg.getWidth();
         int height = inputImg.getHeight();
         if (perm.length != height)
-            throw new IllegalArgumentException("Taille d'image <> taille permutation");
+            throw new IllegalArgumentException(
+        "Taille d'image <> taille permutation");
 
         BufferedImage out = new BufferedImage(width, height,
                 BufferedImage.TYPE_INT_ARGB);
@@ -208,7 +211,8 @@ public class Brouillimg {
         int width = inputImg.getWidth();
         int height = inputImg.getHeight();
         if (perm.length != height)
-            throw new IllegalArgumentException("Taille d'image <> taille permutation");
+            throw new IllegalArgumentException(
+        "Taille d'image <> taille permutation");
 
         BufferedImage out = new BufferedImage(width, height,
                 BufferedImage.TYPE_INT_ARGB);
@@ -266,7 +270,7 @@ public class Brouillimg {
      * @return la clé la plus proche
      */
 
-    
+
     public static int trouverCleValide(int key, int height) {
         int keyPlus = key + 1;
         int keyMoins = key - 1;

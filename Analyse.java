@@ -22,9 +22,12 @@ public class Analyse {
         int cle=Profiler.analyseBreakKey(imageEntree, methode);
         System.out.println("cle : " +cle);
         long nombreCalcul=calculerNbCalculs(methode, hauteur, longueur);
-        System.out.println("temps total de débrouillage : "+(Profiler.formaterUnitTemps(Profiler.globalTime)));
+        System.out.println("temps total de débrouillage : "+
+        (Profiler.formaterUnitTemps(Profiler.globalTime)));
+        
         System.out.println("Nombre de calculs : "+nombreCalcul);
-        System.out.println("Nombre de calculs avec pusisance de 10 : "+convertisseurNorme(nombreCalcul));
+        System.out.println("Nombre de calculs avec pusisance de 10 : "+
+        convertisseurNorme(nombreCalcul));
         
     }
     /**
@@ -36,7 +39,8 @@ public class Analyse {
     public static boolean estUneMethode(String methode) {
         if (methode.equals("Euclid") || 
         methode.equals("Pearson") || 
-        methode.equals("Hybrid") || methode.equals("Auto")
+        methode.equals("Hybrid") ||
+         methode.equals("Auto")
         || methode.equals("Manhattan")) {
             return true;
         }
@@ -61,9 +65,12 @@ public class Analyse {
             case "Euclid":
                 return 32768L*(hauteur-1)*(longueur*3+1L);
             case "Pearson":
-                return 32768L*(hauteur-1)*(longueur*4L+4L)+hauteur*(longueur+1)+hauteur*longueur*3;
+                return 32768L*(hauteur-1)*(longueur*4L+4L)+
+                hauteur*(longueur+1)+hauteur*longueur*3;
             case "Hybrid":
-                return 256L*(hauteur-1)*(longueur*4L+4L)+hauteur*(longueur+1)+hauteur*longueur*3+128L*(hauteur-1L)*(longueur*3L-1L);
+                return 256L*(hauteur-1)*(longueur*4L+4L)+
+                hauteur*(longueur+1)+hauteur*longueur*3+128L*
+                (hauteur-1L)*(longueur*3L-1L);
             case "Manhattan":
                 return 384*(hauteur-1)*(longueur*3L+1L);
             default:
