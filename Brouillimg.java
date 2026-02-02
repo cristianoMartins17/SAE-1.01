@@ -15,6 +15,7 @@ import java.io.IOException;
 public class Brouillimg {
 
     public static void main(String[] args) throws IOException {
+        System.out.println("o");
         if (args.length < 3) {
             System.err.println(
                 "Usage: java Brouillimg <image_entrée> <clé> [image_sortie] <processus>");
