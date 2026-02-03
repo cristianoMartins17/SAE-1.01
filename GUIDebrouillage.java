@@ -1,3 +1,6 @@
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -7,48 +10,96 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class GUIDebrouillage {
-    public JPanel panelMain;
+    public JPanel mainDebrouillage;
+    public JComboBox<String> inputEntree;
 
     GUIDebrouillage() {
         String[] options = {"Euclid","Pearson","Hybrid","Manhattan"};
 
-        panelMain=new JPanel();
 
+        mainDebrouillage=new JPanel();
 
-        JLabel labelHaut= new JLabel("Debrouillage d'image");
+        JLabel labelEntree=new JLabel("Sélectionnez un chemin d'image à débrouiller : ");
+        initialiserChemins();
+        
+        JComboBox<String> inputMethode = new JComboBox<>(options);
+        JLabel labelMethode = new JLabel("Sélectionnez une méthode : ");
+
+        JLabel labelSortie=new JLabel("Entrez le nom une potentielle image de sortie : ");
+        JTextArea inputSortie=new JTextArea(20,1);
         
 
-        JPanel panelEntree = new JPanel();
-        JLabel labelEntree = new JLabel("Entrez une image à débrouiller");
-        JTextField fieldEntree= new JTextField(10);
-        panelEntree.add(labelEntree);
-        panelEntree.add(fieldEntree);
-
-        JPanel panelMethode = new JPanel();
-        JLabel labelMethode = new JLabel("Sélectionnez un processus");
 
 
+        mainDebrouillage.setLayout(new GridBagLayout());
 
-        JComboBox<String> listeDeroulante = new JComboBox<>(options);
-        panelMethode.add(labelMethode);
-        panelMethode.add(listeDeroulante);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets= new Insets(10, 5, 0, 5);
 
-        BoxLayout boxLayout = new BoxLayout(panelMain, BoxLayout.Y_AXIS);
 
-        JPanel panelSortie=new JPanel();
-        JLabel labelSortie = new JLabel("Entrez une image de sortie (optionnel) ");
-        JTextField fieldSortie = new JTextField(10);
+        gbc.weightx=0;
+        gbc.fill=GridBagConstraints.NONE;
+
+
+
+        gbc.gridx=0;
+        gbc.gridy=0;
+        mainDebrouillage.add(labelEntree,gbc);
+
+
+
+        gbc.weightx=1;
+        gbc.fill=GridBagConstraints.HORIZONTAL;
+        gbc.gridx=1;
+        gbc.gridy=0;
+        mainDebrouillage.add(inputEntree,gbc);
+
+
+
+        gbc.weightx=0;
+        gbc.fill=GridBagConstraints.NONE;
+        gbc.gridx=0;
+        gbc.gridy=1;
+        mainDebrouillage.add(labelMethode,gbc);
+
+        gbc.weightx=1;
+        gbc.fill=GridBagConstraints.HORIZONTAL;
+        gbc.gridx=1;
+        gbc.gridy=1;
+        mainDebrouillage.add(inputMethode,gbc);
+
+        gbc.weightx=0;
+        gbc.fill=GridBagConstraints.NONE;
+        gbc.gridx=0;
+        gbc.gridy=2;
+        mainDebrouillage.add(labelSortie,gbc);
+
+        gbc.weightx=1;
+        gbc.fill=GridBagConstraints.HORIZONTAL;
+        gbc.gridx=1;
+        gbc.gridy=2;
+        mainDebrouillage.add(inputSortie,gbc);
+
+
+
+
+        gbc.gridx=0;
+        gbc.gridy=3;
+        gbc.gridwidth=2;
+
 
         JButton btnEnvoyer = new JButton("Envoyer");
         btnEnvoyer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e ) {
-                String entree = fieldEntree.getText();
-                String methode = (String) listeDeroulante.getSelectedItem();
-                String sortie = fieldSortie.getText();
+                String entree =(String) "images/"+inputEntree.getSelectedItem();
+                String methode = (String) inputMethode.getSelectedItem();
+                String sortie = inputSortie.getText();
                 String[] arguments=null;
                 if (sortie.equals("")) {
                     arguments = new String[2];
@@ -71,19 +122,21 @@ public class GUIDebrouillage {
             }
         });
 
-        panelSortie.add(labelSortie);
-        panelSortie.add(fieldSortie);
+        mainDebrouillage.add(btnEnvoyer,gbc);
 
-        panelMain.setLayout(boxLayout);
-        panelMain.add(labelHaut);
-        panelMain.add(panelEntree);
-        panelMain.add(panelMethode);
-        panelMain.add(panelSortie);
-        panelMain.add(btnEnvoyer);
+
+
 
         
 
 
+    }
+
+
+    public void initialiserChemins() {
+        inputEntree = new JComboBox<>(ImagesReader.getImages());
+        mainDebrouillage.revalidate();
+        mainDebrouillage.repaint();
     }
     
 }

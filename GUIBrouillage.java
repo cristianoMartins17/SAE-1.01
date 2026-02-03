@@ -1,14 +1,15 @@
-import java.awt.Component;
-import java.awt.FlowLayout;
+import java.io.IOException;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.Flow;
+import java.io.InputStreamReader;
+
 import java.util.ArrayList;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -17,24 +18,26 @@ import javax.swing.JTextField;
 
 public class GUIBrouillage {
     JPanel mainBrouillage;
+    JComboBox<String> inputChemin;
 
 
     GUIBrouillage() {
+
         mainBrouillage = new JPanel();
-        JLabel labelChemin = new JLabel("Entrez le chemin de l'image à brouiller");
-        JTextField inputChemin = new JTextField("",10);
+        JLabel labelChemin = new JLabel("Sélectionnez le chemin de l'image à brouiller : ");
+        initialiserChemins();
 
 
-        JLabel labelCle = new JLabel("Entrez une clé");
+        JLabel labelCle = new JLabel("Entrez une clé : ");
         JTextField inputCle= new JTextField("",10);
 
 
-        JLabel labelSortie = new JLabel("Entrez une image de sortie");
+        JLabel labelSortie = new JLabel("Entrez une image de sortie : ");
         JTextField inputSortie= new JTextField("",10);
 
 
 
-        JLabel labelProcess = new JLabel("Entrez un processus");
+        JLabel labelProcess = new JLabel("Sélectionnez un processus : ");
         String[] process = new String[]{"scramble","unscramble"};
         JComboBox<String> inputProcess= new JComboBox<>(process);
 
@@ -42,31 +45,16 @@ public class GUIBrouillage {
         btnEnvoyer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String chemin = inputChemin.getText();
+                String chemin = "images/"+(String) inputChemin.getSelectedItem();
                 String cle = inputCle.getText();
-                String sortie = inputSortie.getText();
+                String sortie =inputSortie.getText().equals("") ? "images/out.png" : "images/"+inputSortie.getText();
                 String process =(String) inputProcess.getSelectedItem();
-                ArrayList<String> arguments= new ArrayList<>();
-                switch (process) {
-                    case "":
-                        arguments.add(chemin);
-                        arguments.add(cle);
-                        arguments.add(process);
-                        break;
-                
-                    default:
-                        arguments.add(chemin);
-                        arguments.add(cle);
-                        arguments.add(sortie);
-                        arguments.add(process);
-                        break;
-                }
-                String[] argsTab = new String[arguments.size()];
-                for (int i = 0; i < argsTab.length; i++) {
-                    argsTab[i]=arguments.get(i);
-                }
+
+                String[] arguments= {chemin,cle,sortie,process};
+                System.out.println(sortie);
+                System.out.println(arguments);
                 try {
-                    Brouillimg.main(argsTab);
+                    Brouillimg.main(arguments);
                     
                 } catch (IOException exception) {
                     System.err.println("impossible");
@@ -141,9 +129,15 @@ public class GUIBrouillage {
 
         mainBrouillage.add(panelBtn,gbc);
 
-
-        
     }
+
+    public void initialiserChemins() {
+        inputChemin = new JComboBox<>(ImagesReader.getImages());
+        mainBrouillage.revalidate();
+        mainBrouillage.repaint();
+    }
+
+
  
 
     
