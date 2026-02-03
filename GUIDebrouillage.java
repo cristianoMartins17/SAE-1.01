@@ -124,6 +124,7 @@ public class GUIDebrouillage {
 
                 try {
                     Debrouillage.main(arguments);
+                    initialiserChemins();
                 } catch (IOException exception) {
                     System.out.println("impossible");
                 }
