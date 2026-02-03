@@ -13,44 +13,20 @@ Méthodes : Euclid, Pearson, Hybrid, Manathan
 
 
 Contribution :
-
-<section>
-  <h2>Sofiane au projet</h2>
-
-  <h3>Architecture et organisation</h3>
-  <ul>
-    <li>Organisation de la structure globale du projet et des différentes classes.</li>
-  </ul>
-
-  <h3>Algorithmes de cassage de clé</h3>
-  <ul>
-    <li>Implémentation de la méthode d’Euclide pour casser la clé d’une image brouillée.</li>
-    <li>Améliorations et optimisation des méthodes Euclid et Pearson.</li>
-    <li>Ajout d’une méthode hybride permettant de trouver le paramètre <code>s</code> avec Euclid puis le paramètre <code>r</code> avec Pearson.</li>
-  </ul>
-
-  <h3>Critères et comparaison d’images</h3>
-  <ul>
-    <li>Ajout du critère de Manhattan pour calculer le score d’une image.</li>
-    <li>Ajout de la classe <code>CompareImages</code> permettant de comparer deux images entre elles.</li>
-  </ul>
-
-  <h3>Gestion des images</h3>
-  <ul>
-    <li>Ajout de la classe <code>ImageReader</code> permettant d’obtenir un tableau des chemins d’images dans le dossier <code>.images/</code>.</li>
-  </ul>
-
-  <h3>Profiling et statistiques</h3>
-  <ul>
-    <li>Ajout de la classe <code>Profiler</code> permettant d’obtenir des statistiques sur le cassage de clé, telles que le temps de cassage et le nombre d’opérations effectuées.</li>
-  </ul>
-
-  <h3>Interface graphique</h3>
-  <ul>
-    <li>Ajout d’une interface graphique permettant d’utiliser le projet via différentes pages :</li>
+<ul>
+  <li>Organisation de la structure du projet et des classes.</li>
+  <li>Implémentation de la méthode d’Euclide pour casser la clé d’une image brouillée.</li>
+  <li>Optimisation des méthodes Euclid et Pearson.</li>
+  <li>Création d’une méthode hybride : s via Euclid, r via Pearson.</li>
+  <li>Ajout du critère de Manhattan pour le calcul du score.</li>
+  <li>Création de la classe <code>CompareImages</code> pour comparer deux images.</li>
+  <li>Création de la classe <code>ImageReader</code> pour récupérer les chemins du dossier <code>.images/</code>.</li>
+  <li>Création de la classe <code>Profiler</code> pour mesurer temps et opérations du cassage de clé.</li>
+  <li>Ajout d’une interface graphique avec :
     <ul>
-      <li><strong>Page Brouillage</strong> : permet de brouiller une image en sélectionnant un fichier dans le dossier <code>images</code>.</li>
-      <li><strong>Page Débrouillage</strong> : permet de débrouiller une image brouillée présente dans le dossier <code>images</code>.</li>
+      <li>Une page Brouillage (sélection et brouillage d’image).</li>
+      <li>Une page Débrouillage (décryptage d’image brouillée).</li>
     </ul>
-  </ul>
+  </li>
+</ul>
 </section>
