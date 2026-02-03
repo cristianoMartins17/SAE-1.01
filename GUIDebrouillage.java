@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 
 public class GUIDebrouillage {
     public JPanel mainDebrouillage;
-    public JComboBox<String> inputEntree;
+    public JComboBox<String> inputEntree=new JComboBox<>();
 
     GUIDebrouillage() {
         String[] options = {"Euclid","Pearson","Hybrid","Manhattan"};
@@ -121,8 +121,9 @@ public class GUIDebrouillage {
 
             }
         });
-
-        mainDebrouillage.add(btnEnvoyer,gbc);
+        JPanel panelBtn = new JPanel();
+        panelBtn.add(btnEnvoyer);
+        mainDebrouillage.add(panelBtn,gbc);
 
 
 
@@ -134,7 +135,11 @@ public class GUIDebrouillage {
 
 
     public void initialiserChemins() {
-        inputEntree = new JComboBox<>(ImagesReader.getImages());
+        inputEntree.removeAllItems();
+        String[] images = ImagesReader.getImages();
+        for (int i=0;i<images.length;i++) {
+            inputEntree.addItem(images[i]);
+        }
         mainDebrouillage.revalidate();
         mainDebrouillage.repaint();
     }

@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 
 public class GUIBrouillage {
     JPanel mainBrouillage;
-    JComboBox<String> inputChemin;
+    JComboBox<String> inputChemin=new JComboBox<>();
 
 
     GUIBrouillage() {
@@ -55,6 +55,7 @@ public class GUIBrouillage {
                 System.out.println(arguments);
                 try {
                     Brouillimg.main(arguments);
+                    initialiserChemins();
                     
                 } catch (IOException exception) {
                     System.err.println("impossible");
@@ -69,7 +70,7 @@ public class GUIBrouillage {
         mainBrouillage.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.anchor = GridBagConstraints.LINE_START;
         gbc.insets= new Insets(10, 5, 0, 5);
 
 
@@ -132,7 +133,11 @@ public class GUIBrouillage {
     }
 
     public void initialiserChemins() {
-        inputChemin = new JComboBox<>(ImagesReader.getImages());
+        inputChemin.removeAllItems();
+        String[] images = ImagesReader.getImages();
+        for (int i=0;i<images.length;i++) {
+            inputChemin.addItem(images[i]);
+        }
         mainBrouillage.revalidate();
         mainBrouillage.repaint();
     }

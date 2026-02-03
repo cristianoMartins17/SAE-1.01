@@ -12,7 +12,7 @@ public class GUIMain {
 
     public static void main(String[] args) {
         JFrame fenetre = new JFrame("SAE");
-        fenetre.setSize(400,250);
+        fenetre.setSize(500,300);
         GUIBrouillage brouillageInterface= new GUIBrouillage();
         GUIDebrouillage debrouillageGraphique = new GUIDebrouillage();
 
