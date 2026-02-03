@@ -12,7 +12,8 @@ processus = Scramble / Unscramble
 Méthodes : Euclid, Pearson, Hybrid, Manathan
 
 
-Contribution :
+<h2>Contribution :</h2>
+<h4> Sofiane Tacherift </h4>
 <ul>
   <li>Organisation de la structure du projet et des classes.</li>
   <li>Implémentation de la méthode d’Euclide pour casser la clé d’une image brouillée.</li>
