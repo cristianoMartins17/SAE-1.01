@@ -1,22 +1,20 @@
 import java.io.IOException;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class GUIBrouillage {
+public class GUIBrouillage { 
+    Color couleurFond=new Color(201, 201, 199);
+    Color couleurFondBtn=new Color(0x35A8CC);
+
     JPanel mainBrouillage;
     JComboBox<String> inputChemin=new JComboBox<>();
 
@@ -24,6 +22,7 @@ public class GUIBrouillage {
     GUIBrouillage() {
 
         mainBrouillage = new JPanel();
+        mainBrouillage.setBackground(couleurFond);
         JLabel labelChemin = new JLabel("Sélectionnez le chemin de l'image à brouiller : ");
         initialiserChemins();
 
@@ -42,22 +41,24 @@ public class GUIBrouillage {
         JComboBox<String> inputProcess= new JComboBox<>(process);
 
         JButton btnEnvoyer = new JButton("envoyer");
+        btnEnvoyer.setBackground(couleurFondBtn);
+        btnEnvoyer.setForeground(Color.white);
+        btnEnvoyer.setFocusPainted(false);
         btnEnvoyer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                btnEnvoyer.setBackground(couleurFond);
                 String chemin = "images/"+(String) inputChemin.getSelectedItem();
                 String cle = inputCle.getText();
                 String sortie =inputSortie.getText().equals("") ? "images/out.png" : "images/"+inputSortie.getText();
                 String process =(String) inputProcess.getSelectedItem();
 
                 String[] arguments= {chemin,cle,sortie,process};
-                System.out.println(sortie);
-                System.out.println(arguments);
                 try {
                     Brouillimg.main(arguments);
                     initialiserChemins();
                     
-                } catch (IOException exception) {
+                } catch (Exception exception) {
                     System.err.println("impossible");
                 };
             }
@@ -65,7 +66,9 @@ public class GUIBrouillage {
 
         });
 
+
         JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(couleurFond);
         panelBtn.add(btnEnvoyer);
         mainBrouillage.setLayout(new GridBagLayout());
 

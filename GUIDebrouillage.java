@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -16,12 +17,17 @@ import javax.swing.JTextField;
 public class GUIDebrouillage {
     public JPanel mainDebrouillage;
     public JComboBox<String> inputEntree=new JComboBox<>();
+    
 
     GUIDebrouillage() {
         String[] options = {"Euclid","Pearson","Hybrid","Manhattan"};
 
+        Color couleurFond=new Color(201, 201, 199);
+        Color couleurFondBtn=new Color(0x35A8CC);
+
 
         mainDebrouillage=new JPanel();
+        mainDebrouillage.setBackground(couleurFond);
 
         JLabel labelEntree=new JLabel("Sélectionnez un chemin d'image à débrouiller : ");
         initialiserChemins();
@@ -94,6 +100,9 @@ public class GUIDebrouillage {
 
 
         JButton btnEnvoyer = new JButton("Envoyer");
+        btnEnvoyer.setFocusPainted(false);
+        btnEnvoyer.setBackground(couleurFondBtn);
+        btnEnvoyer.setForeground(Color.WHITE);
         btnEnvoyer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e ) {
@@ -110,7 +119,7 @@ public class GUIDebrouillage {
                     arguments= new String[3];
                     arguments[0]=entree;
                     arguments[1]=methode;
-                    arguments[2]=sortie;
+                    arguments[2]="images/"+sortie;
                 }
 
                 try {
@@ -122,6 +131,7 @@ public class GUIDebrouillage {
             }
         });
         JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(couleurFond);
         panelBtn.add(btnEnvoyer);
         mainDebrouillage.add(panelBtn,gbc);
 
