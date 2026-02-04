@@ -1,11 +1,14 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.SpringLayout.Constraints;
 import javax.swing.border.Border;
 
 public class GUIMain {
@@ -92,8 +95,15 @@ public class GUIMain {
     public static JPanel creerMenu(Color couleurFond) {
         JPanel menu = new JPanel();
         menu.setBackground(couleurFond);
-        JLabel texte = new JLabel("Bienvenue sur cette interface graphique");
+
+        menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
+        JLabel titre = new JLabel("Bienvenue sur cette interface graphique");
+        JTextArea texte = new JTextArea("Cette interface graphique a été réalisée avec Swing afin de pouvroir brouiller et débrouiller des images directement sur une interface. On utilise BuilderProcess pour pouvoir obtenir les chemins d'images du dossier image et il n'y a que Windows, Linux et MacOS supportés.");
         texte.setBackground(couleurFond);
+        texte.setLineWrap(true);
+        texte.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titre.setAlignmentX(Component.CENTER_ALIGNMENT);
+        menu.add(titre);
         menu.add(texte);
         return menu;
 
