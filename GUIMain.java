@@ -102,6 +102,7 @@ public class GUIMain {
         texte.setBackground(couleurFond);
         texte.setLineWrap(true);
         texte.setWrapStyleWord(true);
+        texte.setEditable(false);
         texte.setAlignmentX(Component.CENTER_ALIGNMENT);
         titre.setAlignmentX(Component.CENTER_ALIGNMENT);
         menu.add(titre);
