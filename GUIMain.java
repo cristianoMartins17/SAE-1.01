@@ -101,6 +101,7 @@ public class GUIMain {
         JTextArea texte = new JTextArea("Cette interface graphique a été réalisée avec Swing afin de pouvroir brouiller et débrouiller des images directement sur une interface. On utilise BuilderProcess pour pouvoir obtenir les chemins d'images du dossier image et il n'y a que Windows, Linux et MacOS supportés.");
         texte.setBackground(couleurFond);
         texte.setLineWrap(true);
+        texte.setWrapStyleWord(true);
         texte.setAlignmentX(Component.CENTER_ALIGNMENT);
         titre.setAlignmentX(Component.CENTER_ALIGNMENT);
         menu.add(titre);
