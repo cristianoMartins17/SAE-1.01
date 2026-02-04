@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -36,7 +37,7 @@ public class GUIDebrouillage {
         JLabel labelMethode = new JLabel("Sélectionnez une méthode : ");
 
         JLabel labelSortie=new JLabel("Entrez le nom une potentielle image de sortie : ");
-        JTextArea inputSortie=new JTextArea(20,1);
+        JTextArea inputSortie=new JTextArea(1,20);
         
 
 
@@ -44,7 +45,7 @@ public class GUIDebrouillage {
         mainDebrouillage.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.anchor = GridBagConstraints.LINE_END;
         gbc.insets= new Insets(10, 5, 0, 5);
 
 
@@ -81,6 +82,7 @@ public class GUIDebrouillage {
 
         gbc.weightx=0;
         gbc.fill=GridBagConstraints.NONE;
+        gbc.weighty=0;
         gbc.gridx=0;
         gbc.gridy=2;
         mainDebrouillage.add(labelSortie,gbc);
@@ -94,9 +96,6 @@ public class GUIDebrouillage {
 
 
 
-        gbc.gridx=0;
-        gbc.gridy=3;
-        gbc.gridwidth=2;
 
 
         JButton btnEnvoyer = new JButton("Envoyer");
@@ -131,10 +130,25 @@ public class GUIDebrouillage {
 
             }
         });
+
+        gbc.gridx=0;
+        gbc.gridy=3;
+        gbc.gridwidth=2;
+
         JPanel panelBtn = new JPanel();
         panelBtn.setBackground(couleurFond);
         panelBtn.add(btnEnvoyer);
         mainDebrouillage.add(panelBtn,gbc);
+
+        
+        JPanel panelVide=new JPanel();
+        gbc.weighty=1;
+        gbc.gridx=0;
+        gbc.gridy=4;
+        gbc.gridwidth=2;
+        gbc.fill=GridBagConstraints.VERTICAL;
+        panelVide.setBackground(couleurFond);
+        mainDebrouillage.add(panelVide,gbc);
 
 
 

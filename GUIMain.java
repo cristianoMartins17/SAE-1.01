@@ -15,7 +15,7 @@ public class GUIMain {
         Color couleurFond=new Color(201, 201, 199);
         JFrame fenetre = new JFrame("SAE");
         fenetre.setSize(500,300);
-        fenetre.setResizable(false);
+        fenetre.setResizable(true);
         GUIBrouillage brouillageInterface= new GUIBrouillage();
         GUIDebrouillage debrouillageGraphique = new GUIDebrouillage();
 

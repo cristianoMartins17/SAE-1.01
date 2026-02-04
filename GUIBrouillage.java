@@ -5,6 +5,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -73,7 +75,7 @@ public class GUIBrouillage {
         mainBrouillage.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.anchor = GridBagConstraints.LINE_END;
         gbc.insets= new Insets(10, 5, 0, 5);
 
 
@@ -126,12 +128,18 @@ public class GUIBrouillage {
         gbc.gridy=3;
         mainBrouillage.add(inputProcess,gbc);
 
-
         gbc.gridx=0;
         gbc.gridy=4;
         gbc.gridwidth=2;
-
         mainBrouillage.add(panelBtn,gbc);
+
+        gbc.gridx=0;
+        gbc.gridy=5;
+        gbc.weighty=100;
+        gbc.fill=GridBagConstraints.VERTICAL;
+        JPanel panelVide=new JPanel();
+        panelVide.setBackground(couleurFond);
+        mainBrouillage.add(panelVide,gbc);
 
     }
 
